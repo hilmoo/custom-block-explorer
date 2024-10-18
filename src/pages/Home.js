@@ -4,6 +4,17 @@ import {
   getLatestBlockNumber,
   listenToNewBlocks,
 } from "../services/Web3Service";
+import SummaryCard from "../components/SummaryCard";
+import Title from "../components/UI/Title";
+
+const SUMMARY = [
+  { key: "marketcap", label: "Market Cap" },
+  { key: "marketcap", label: "Total txns" },
+  { key: "marketcap", label: "Avg. Gas price" },
+  { key: "marketcap", label: "ETH total staked" },
+  { key: "marketcap", label: "24h txn volume" },
+  { key: "marketcap", label: "Block height" },
+];
 
 const Home = () => {
   const [blockNumber, setBlockNumber] = useState(0);
@@ -25,16 +36,19 @@ const Home = () => {
 
     fetchData();
 
-    // Listen for new blocks
-    listenToNewBlocks(async (blockNumber) => {
-      const newBlock = await getBlock(blockNumber);
-      setBlocks((prevBlocks) => [newBlock, ...prevBlocks.slice(0, 9)]);
-    });
+    // // Listen for new blocks
+    // listenToNewBlocks(async (blockNumber) => {
+    //   const newBlock = await getBlock(blockNumber);
+    //   setBlocks((prevBlocks) => [newBlock, ...prevBlocks.slice(0, 9)]);
+    // });
   }, []);
 
   return (
     <div className="p-6">
-      <h1>Latest Blocks</h1>
+      <div className="container mx-auto py-8">
+        <Title> Summary </Title>
+        <SummaryCard />
+      </div>
       <ul>
         {blocks.map((block) => (
           <li key={block.number}>
