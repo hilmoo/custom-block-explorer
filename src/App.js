@@ -1,11 +1,19 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import AppLayout from "./containers/Layout";
+import PageNotFound from "./containers/PageNotFound";
+
 import "./App.css";
-import AppLayout from "./components/Layout";
 
 function App() {
   return (
-    <AppLayout>
-      <div className="App"></div>
-    </AppLayout>
+    <Router>
+      <Routes>
+        <Route path="/" element={<AppLayout />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

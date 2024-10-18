@@ -18,6 +18,7 @@ root.render(
           colorError: "#ffa0a2",
           borderRadius: 2,
           wireframe: true,
+          fontFamily: "Varela",
         },
       }}
     >
