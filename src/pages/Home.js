@@ -6,6 +6,7 @@ import {
 } from "../services/Web3Service";
 import SummaryCard from "../components/SummaryCard";
 import Title from "../components/UI/Title";
+import BlockListCard from "../components/BlockList";
 
 const SUMMARY = [
   { key: "marketcap", label: "Market Cap" },
@@ -49,6 +50,12 @@ const Home = () => {
         <Title> Summary </Title>
         <SummaryCard />
       </div>
+
+      <div className="container mx-auto py-8">
+        {/* <Title> BlockList </Title> */}
+        <BlockListCard />
+      </div>
+
       <ul>
         {blocks.map((block) => (
           <li key={block.number}>
