@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { ethers } from "ethers";
+import { getBlockNumber } from "../helpers";
 
 const columns = [
   { title: "Block Number", dataIndex: "blockNumber", key: "blockNumber" },
@@ -13,20 +14,21 @@ const data = [
 ];
 
 const Blocks = () => {
-  const getBlockNumber = async () => {
-    const provider = new ethers.providers.JsonRpcProvider(
-      "http://127.0.0.1:8545"
-    );
-    const blockNumber = await provider.getBlockNumber();
-    console.log(blockNumber);
-  };
+  const [blockNumber, setBlockNumber] = useState(0);
+  useEffect(() => {
+    getBlockNum();
+  });
 
-  getBlockNumber();
+  const getBlockNum = async () => {
+    const block = await getBlockNumber();
+    console.log({ block });
+    setBlockNumber(block);
+  };
 
   return (
     <div className="p-6">
       <h1 className="text-2xl mb-4">Blocks</h1>
-      <Table columns={columns} dataSource={data} />
+      <p> Current Block: {blockNumber}</p>
     </div>
   );
 };
