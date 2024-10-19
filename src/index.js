@@ -10,16 +10,7 @@ root.render(
   <React.StrictMode>
     <ConfigProvider
       theme={{
-        token: {
-          colorPrimary: "#000000",
-          colorInfo: "#000000",
-          colorSuccess: "#caffaf",
-          colorWarning: "#fce2ae",
-          colorError: "#ffa0a2",
-          borderRadius: 2,
-          wireframe: true,
-          fontFamily: "Varela",
-        },
+        token: {},
       }}
     >
       <App />

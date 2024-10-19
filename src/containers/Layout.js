@@ -2,6 +2,8 @@ import React, { lazy } from "react";
 import { Layout, Menu } from "antd";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
+import FooterComponent from "../components/UI/Footer";
+
 const HomePage = lazy(() => import("../pages/Home"));
 
 const { Header, Content, Footer } = Layout;
@@ -54,24 +56,24 @@ const AppLayout = () => {
     navigate(item.key); // Navigate to the clicked route
   };
   return (
-    <Layout className="font-varela">
-      <Header className="flex sticky w-100 align-item-center z-1 top-0">
+    <Layout className="font-varela ">
+      <Header className="flex sticky w-100 align-item-center z-1 top-0 bg-black text-white">
         <div className="demo-logo" />
         <Menu
           theme="dark"
           mode="horizontal"
           items={NAVBAR}
-          className="flex-1 min-w-0"
+          className="flex-1 min-w-0 bg-black "
           onClick={handleMenuClick}
         />
       </Header>
-      <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-140px)]">
+      <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-132px)]">
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
       </Content>
-      <Footer className="text-center">
-        Block Explorer ©2024 Created with React
+      <Footer className="text-center bg-black text-white">
+        <FooterComponent />
       </Footer>
     </Layout>
   );
