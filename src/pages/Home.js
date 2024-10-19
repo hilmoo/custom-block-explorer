@@ -1,23 +1,14 @@
 import React from "react";
 
-import SummaryCard from "../components/SummaryCard";
-import Title from "../components/UI/Title";
-import BlockListCard from "../components/BlockList";
+import SummarySection from "../containers/Home/SummarySection";
+import BlockListSection from "../containers/Home/BlockList";
 
 const Home = () => {
   return (
     <div className="p-6">
-      <div className="container py-8 mx-auto">
-        <div className="flex justify-between items-center">
-          <Title>Summary</Title>
-        </div>
-        <SummaryCard />
-      </div>
+      <SummarySection />
 
-      <div className="container py-8 mx-auto">
-        {/* <Title> BlockList </Title> */}
-        <BlockListCard />
-      </div>
+      <BlockListSection />
     </div>
   );
 };
