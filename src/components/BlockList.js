@@ -50,13 +50,13 @@ const BlockListCard = () => {
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-      <div>
+      <div className="shadow-md border rounded p-6">
         <div className="flex justify-between items-center mb-4 px-2">
-          <Title className="p-0">Blocks</Title>
+          <Title className="p-0 ml-2">Blocks</Title>
           <ArrowRightIcon className="ml-2 w-4 h-4" />
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 divide-y">
           {blocks.map((block, index) => (
             <BlockCard key={index} {...block} />
           ))}

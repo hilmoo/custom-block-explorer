@@ -28,8 +28,8 @@ const SUMMARY = [
 
 const SummaryCard = () => {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md w-full">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div className="p-4 rounded-lg border w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-y md:divide-y-0 md:divide-x divide-gray-200">
         {SUMMARY.map((item, index) => (
           <StatsCard key={index} {...item} />
         ))}
