@@ -46,12 +46,12 @@ const Home = () => {
 
   return (
     <div className="p-6">
-      <div className="container mx-auto py-8">
+      <div className="container py-8 mx-auto">
         <Title> Summary </Title>
         <SummaryCard />
       </div>
 
-      <div className="container mx-auto py-8">
+      <div className="container py-8 mx-auto">
         {/* <Title> BlockList </Title> */}
         <BlockListCard />
       </div>

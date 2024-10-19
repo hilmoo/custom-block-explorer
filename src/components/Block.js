@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
-import { ethers } from "ethers";
-import { getBlockNumber } from "../helpers";
 
 const columns = [
   { title: "Block Number", dataIndex: "blockNumber", key: "blockNumber" },
@@ -15,15 +12,6 @@ const data = [
 
 const Blocks = () => {
   const [blockNumber, setBlockNumber] = useState(0);
-  useEffect(() => {
-    getBlockNum();
-  });
-
-  const getBlockNum = async () => {
-    const block = await getBlockNumber();
-    console.log({ block });
-    setBlockNumber(block);
-  };
 
   return (
     <div className="p-6">

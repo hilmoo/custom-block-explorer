@@ -1,7 +1,7 @@
-const Title = ({ children }) => {
+const Title = ({ className = "", children }) => {
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <h1 className="p-4 font-varela font-bold text-xl mx-auto">{children}</h1>
+    <div className={`w-full p-4 mx-auto ${className}`}>
+      <h1 className="font-varela font-bold text-xl mx-auto">{children}</h1>
     </div>
   );
 };

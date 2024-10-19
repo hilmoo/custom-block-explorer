@@ -28,7 +28,7 @@ const SUMMARY = [
 
 const SummaryCard = () => {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md max-w-screen-lg mx-auto">
+    <div className="p-4 bg-white rounded-lg shadow-md w-full">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {SUMMARY.map((item, index) => (
           <StatsCard key={index} {...item} />
