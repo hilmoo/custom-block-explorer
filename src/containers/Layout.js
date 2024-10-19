@@ -65,7 +65,7 @@ const AppLayout = () => {
           onClick={handleMenuClick}
         />
       </Header>
-      <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-full">
+      <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-140px)]">
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>

@@ -10,6 +10,7 @@ const ListCard = ({
   reward,
   gasPrice,
   txns,
+  isTransaction = false,
 }) => {
   return (
     <div className="p-2 rounded-lg">
@@ -24,26 +25,43 @@ const ListCard = ({
           <div className="text-gray-500">{timeAgo}</div>
         </div>
 
-        <div className="col-span-3">
-          <div className="text-gray-700">
-            <span className="font-semibold">Producer: </span>
-            <a href={producerLink} className="text-blue-500 truncate">
-              {producer}
-            </a>
-          </div>
-          <div className="flex ">
-            <span className="font-bold">{txns} &nbsp;</span>
-            <div className="text-gray-500">
-              <span className="font-semibold"> Reward: </span>
-              {reward}
+        {!isTransaction ? (
+          <div className="col-span-3">
+            <div className="text-gray-700">
+              <span className="font-semibold">Producer: </span>
+              <a href={producerLink} className="text-blue-500 truncate">
+                {producer}
+              </a>
+            </div>
+            <div className="flex ">
+              <span className="font-bold">{txns} &nbsp;</span>
+              <div className="text-gray-500">
+                <span className="font-semibold"> Reward: </span>
+                {reward}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="col-span-3">
+            <div className="text-gray-700">
+              <span className="font-semibold">From: &nbsp;</span>
+              <a href={producerLink} className="text-blue-500 truncate">
+                {producer}
+              </a>
+            </div>
+            <div className="flex ">
+              <span className="font-semibold">To: &nbsp;</span>
+              <a href={producerLink} className="text-blue-500 truncate">
+                {producer}
+              </a>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-center items-center">
           <div className="flex justify-center items-center h-fit bg-[#e1dede6b] rounded">
-            <BanknotesIcon className="w-4 h-4" />{" "}
-            <span className="ml-2 font-extrabold">{gasPrice}</span>
+            {!isTransaction && <BanknotesIcon className="w-4 h-4" />}
+            <span className="ml-2 font-extrabold"> {gasPrice}</span>
           </div>
         </div>
       </div>
