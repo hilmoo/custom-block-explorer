@@ -4,130 +4,18 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import BlockCard from "../../components/UI/BlockCard";
 import Title from "../../components/UI/Title";
 import Button from "../../components/UI/Button";
+import { useNavigate } from "react-router-dom";
 
-const BlockListCard = () => {
-  const blocks = [
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-    {
-      blockNumber: "20993917",
-      timeAgo: "2 hr ago",
-      producer: "0x51a1...99221712de97",
-      producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-      txns: "110 txns",
-      reward: "0.02352081 ETH",
-      gasPrice: "20.35 Gwei",
-      blockLink: "/eth/block/20993917",
-    },
-  ];
+const BlockListCard = ({ blocks }) => {
+  const navigate = useNavigate();
+
+  const onBlockClick = () => {
+    navigate("/blocks");
+  };
+
+  const onTransactionClick = () => {
+    navigate("/tx");
+  };
 
   return (
     <div className="container py-8 mx-auto">
@@ -136,7 +24,10 @@ const BlockListCard = () => {
           <div className="flex justify-between items-center mb-4 px-2">
             <Title className="p-0">Blocks</Title>
 
-            <ArrowRightIcon className="ml-2 w-4 h-4" />
+            <ArrowRightIcon
+              className="ml-2 w-4 h-4 cursor-pointer"
+              onClick={onBlockClick}
+            />
           </div>
           <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
@@ -144,7 +35,7 @@ const BlockListCard = () => {
             ))}
           </div>
           <div className="px-2 mt-4 mb-0 flex w-full">
-            <Button label="Show All" />
+            <Button label="Show All" onClick={onBlockClick} />
           </div>
         </div>
 
@@ -152,7 +43,10 @@ const BlockListCard = () => {
           <div className="flex justify-between items-center mb-4 px-2">
             <Title className="p-0">Transactions</Title>
 
-            <ArrowRightIcon className="ml-2 w-4 h-4" />
+            <ArrowRightIcon
+              className="ml-2 w-4 h-4 cursor-pointer"
+              onClick={onTransactionClick}
+            />
           </div>
           <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
@@ -160,7 +54,7 @@ const BlockListCard = () => {
             ))}
           </div>
           <div className="px-2 mt-4 mb-0 flex w-full">
-            <Button label="Show All" />
+            <Button label="Show All" onClick={onTransactionClick} />
           </div>
         </div>
       </div>
