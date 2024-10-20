@@ -131,37 +131,35 @@ const BlockListCard = () => {
 
   return (
     <div className="container py-8 mx-auto">
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 ">
-        <div className="shadow-md border rounded p-6  overflow-hidden">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+        <div className="shadow-md border rounded p-6 overflow-hidden hidden md:block">
           <div className="flex justify-between items-center mb-4 px-2">
-            <Title className="p-0 ml-2">Blocks</Title>
+            <Title className="p-0">Blocks</Title>
+
             <ArrowRightIcon className="ml-2 w-4 h-4" />
           </div>
-
           <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
               <BlockCard key={index} {...block} />
             ))}
           </div>
-
-          <div className="px-2 mt-4 mb-0 flex w-100">
+          <div className="px-2 mt-4 mb-0 flex w-full">
             <Button label="Show All" />
           </div>
         </div>
 
-        <div className="shadow-md border rounded p-6  overflow-hidden">
+        <div className="shadow-md border rounded p-6 overflow-hidden">
           <div className="flex justify-between items-center mb-4 px-2">
-            <Title className="p-0 ml-2">Transactions</Title>
+            <Title className="p-0">Transactions</Title>
+
             <ArrowRightIcon className="ml-2 w-4 h-4" />
           </div>
-
-          <div className="space-y-4 divide-y max-h-[470px] overflow-scroll md:[overflow-anchor:none] sm:[overflow-anchor:none]">
+          <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
               <BlockCard key={index} {...block} isTransaction />
             ))}
           </div>
-
-          <div className="px-2 mt-4 mb-0 flex w-100">
+          <div className="px-2 mt-4 mb-0 flex w-full">
             <Button label="Show All" />
           </div>
         </div>

@@ -14,8 +14,8 @@ const ListCard = ({
 }) => {
   return (
     <div className="p-2 rounded-lg">
-      <div class="grid grid-cols-6">
-        <div className="row-span-3 flex justify-center items-center">
+      <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+        <div className="row-span-3 justify-center items-center hidden md:block">
           <Square2StackIcon className="w-10 h-10" />
         </div>
         <div className="">
@@ -58,8 +58,8 @@ const ListCard = ({
           </div>
         )}
 
-        <div className="flex justify-center items-center">
-          <div className="flex justify-center items-center h-fit bg-[#e1dede6b] rounded">
+        <div className="flex justify-start items-start sm:justify-center sm:items-center">
+          <div className="flex items-center h-fit bg-[#e1dede6b] rounded">
             {!isTransaction && <BanknotesIcon className="w-4 h-4" />}
             <span className="ml-2 font-extrabold"> {gasPrice}</span>
           </div>
