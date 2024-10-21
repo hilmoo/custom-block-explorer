@@ -14,7 +14,7 @@ const ListCard = ({
 }) => {
   return (
     <div className="p-2 rounded-lg">
-      <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
         <div className="row-span-3 justify-center items-center hidden md:block">
           <Square2StackIcon className="w-10 h-10" />
         </div>

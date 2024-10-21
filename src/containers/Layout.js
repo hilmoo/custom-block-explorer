@@ -1,10 +1,10 @@
-import React, { lazy } from "react";
+import React from "react";
 import { Layout, Menu } from "antd";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
+import routes from "../routes";
+import PageNotFound from "../containers/PageContent";
 import FooterComponent from "../components/UI/Footer";
-
-const HomePage = lazy(() => import("../pages/Home"));
 
 const { Header, Content, Footer } = Layout;
 
@@ -69,7 +69,10 @@ const AppLayout = () => {
       </Header>
       <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-132px)]">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {routes.map(({ path, component }) => (
+            <Route key={path} path={path} element={component} />
+          ))}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Content>
       <Footer className="text-center bg-black text-white">
