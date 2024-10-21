@@ -1,7 +1,8 @@
 import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("../pages/Home"));
-const Blocks = lazy(() => import("../pages/Blocks"));
+const BlockList = lazy(() => import("../pages/BlockList"));
+const Transactions = lazy(() => import("../pages/Transactions"));
 
 const routes = [
   {
@@ -13,10 +14,18 @@ const routes = [
     ),
   },
   {
-    path: "/blocks",
+    path: "/block-list",
     component: (
       <Suspense fallback={<div>Loading Home...</div>}>
-        <Blocks />
+        <BlockList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/txs",
+    component: (
+      <Suspense fallback={<div>Loading Home...</div>}>
+        <Transactions />
       </Suspense>
     ),
   },

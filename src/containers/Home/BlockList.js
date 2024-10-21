@@ -10,11 +10,11 @@ const BlockListCard = ({ blocks }) => {
   const navigate = useNavigate();
 
   const onBlockClick = () => {
-    navigate("/blocks");
+    navigate("/block-list");
   };
 
   const onTransactionClick = () => {
-    navigate("/tx");
+    navigate("/txs");
   };
 
   return (
