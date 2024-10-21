@@ -1,0 +1,69 @@
+import React, { useCallback, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+
+import Divider from "../components/UI/Divider";
+import TabButton from "../components/UI/TabButton";
+import BlockOverview from "../containers/Block/BlockOverview";
+import BlockTransactions from "../containers/Block/BlockTransaction";
+import InternalTransaction from "../containers/Block/InternalTransaction";
+import TokenTransfer from "../containers/Block/TokenTransfer";
+import Withdrawals from "../containers/Block/Withdrawals";
+
+const TABS = [
+  { id: 1, label: "Overview", value: "overview" },
+  { id: 1, label: "Transactions", value: "transaction" },
+  { id: 1, label: "Internal Txs", value: "internalTxs" },
+  { id: 1, label: "Token Transfers", value: "tokenTransfer" },
+  { id: 1, label: "Withdrawals", value: "withdrawal" },
+];
+
+const Block = () => {
+  const [activeTab, setActiveTab] = useState(TABS[0].value);
+
+  const onTabButtonClick = (id) => {
+    setActiveTab(id);
+  };
+
+  const getActiveTabContent = useCallback(() => {
+    if (activeTab === "overview") {
+      return <BlockOverview />;
+    } else if (activeTab === "transaction") {
+      return <BlockTransactions />;
+    } else if (activeTab === "internalTxs") {
+      return <InternalTransaction />;
+    } else if (activeTab === "tokenTransfer") {
+      return <TokenTransfer />;
+    } else {
+      return <Withdrawals />;
+    }
+  }, [activeTab]);
+
+  return (
+    <div className="p-6">
+      <div>
+        <div className="flex flex-row font-varela font-bold">
+          <span className="text-lg">Block</span>
+          <div className="flex flex-row justify-items-center items-center ml-4">
+            <ChevronLeftIcon className="w-3 h-3 cursor-pointer" />
+            <span className="text-md mx-1">123</span>
+            <ChevronRightIcon className="w-3 h-3 cursor-pointer" />
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className="flex mt-3">
+          <TabButton
+            defaultActiveKey={activeTab}
+            items={TABS}
+            onTabButtonClick={onTabButtonClick}
+          />
+        </div>
+
+        <div>{getActiveTabContent()}</div>
+      </div>
+    </div>
+  );
+};
+
+export default Block;
