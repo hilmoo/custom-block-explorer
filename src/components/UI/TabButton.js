@@ -18,7 +18,7 @@ const TabButton = ({
   };
 
   return (
-    <div className="flex my-2">
+    <div className="flex flex-wrap my-2">
       {items.map(({ label, value, ...rest }) => (
         <button
           {...rest}
