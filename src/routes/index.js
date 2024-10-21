@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("../pages/Home"));
 const Blocks = lazy(() => import("../pages/Blocks"));
@@ -6,11 +6,19 @@ const Blocks = lazy(() => import("../pages/Blocks"));
 const routes = [
   {
     path: "/",
-    component: <Home />,
+    component: (
+      <Suspense fallback={<div>Loading Home...</div>}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: "/blocks",
-    component: <Blocks />,
+    component: (
+      <Suspense fallback={<div>Loading Home...</div>}>
+        <Blocks />
+      </Suspense>
+    ),
   },
 ];
 
