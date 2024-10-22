@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 
 import Divider from "../components/UI/Divider";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
-import Tooltip from "../components/UI/Tooltip";
 import AddressOverview from "../containers/Address/AddressOverview";
 import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
+import AddressSection from "../containers/Address/AddressSection";
 
 const AddressPage = () => {
   const { address } = useParams();
@@ -26,10 +26,14 @@ const AddressPage = () => {
 
         <Divider />
 
-        <div class="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <AddressOverview />
           <TransactionInfo />
           <MoreInfo />
+        </div>
+
+        <div>
+          <AddressSection />
         </div>
       </div>
     </div>
