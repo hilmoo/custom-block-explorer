@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import AddressPage from "../pages/Address";
 
 const Home = lazy(() => import("../pages/Home"));
 const BlockList = lazy(() => import("../pages/BlockList"));
@@ -44,6 +45,14 @@ const routes = [
     component: (
       <Suspense fallback={<div>Loading Transaction...</div>}>
         <Transaction />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/address/:address",
+    component: (
+      <Suspense fallback={<div>Loading Address...</div>}>
+        <AddressPage />
       </Suspense>
     ),
   },

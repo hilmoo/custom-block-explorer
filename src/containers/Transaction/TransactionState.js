@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
+import { Link } from "react-router-dom";
 
 const DATA = {
   key: "1",
-  address: "0xe08....dc92a",
+  address: "0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97",
   before: 234,
   after: 234,
   stateDifference: 12,
@@ -14,6 +15,11 @@ const COLUMNS = [
     title: "Address",
     dataIndex: "address",
     key: "address",
+    render: (address) => (
+      <Link className="text-[#1677ff]" to={`/address/${address}`}>
+        {address}
+      </Link>
+    ),
   },
   {
     title: "Before",
