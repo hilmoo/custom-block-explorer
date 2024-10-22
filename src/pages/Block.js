@@ -8,6 +8,7 @@ import BlockTransactions from "../containers/Block/BlockTransaction";
 import InternalTransaction from "../containers/Block/InternalTransaction";
 import TokenTransfer from "../containers/Block/TokenTransfer";
 import Withdrawals from "../containers/Block/Withdrawals";
+import { useNavigate, useParams } from "react-router-dom";
 
 const TABS = [
   { id: 1, label: "Overview", value: "overview" },
@@ -20,8 +21,21 @@ const TABS = [
 const Block = () => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const onTabButtonClick = (id) => {
     setActiveTab(id);
+  };
+
+  const onPreviousBlockClick = (event) => {
+    event.preventDefault();
+    navigate(`/block/${Number(id) - 1}`, { replace: false });
+  };
+
+  const onNextBlockClick = (event) => {
+    event.preventDefault();
+    navigate(`/block/${Number(id) + 1}`, { replace: false });
   };
 
   const getActiveTabContent = useCallback(() => {
@@ -44,9 +58,15 @@ const Block = () => {
         <div className="flex flex-row font-varela font-bold">
           <span className="text-lg">Block</span>
           <div className="flex flex-row justify-items-center items-center ml-4">
-            <ChevronLeftIcon className="w-3 h-3 cursor-pointer" />
-            <span className="text-md mx-1">123</span>
-            <ChevronRightIcon className="w-3 h-3 cursor-pointer" />
+            <ChevronLeftIcon
+              className="w-3 h-3 cursor-pointer"
+              onClick={onPreviousBlockClick}
+            />
+            <span className="text-md mx-1">{id || ""}</span>
+            <ChevronRightIcon
+              className="w-3 h-3 cursor-pointer"
+              onClick={onNextBlockClick}
+            />
           </div>
         </div>
 

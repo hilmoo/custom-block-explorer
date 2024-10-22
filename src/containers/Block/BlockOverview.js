@@ -142,7 +142,13 @@ const BlockTransaction = () => {
   return (
     <div className="mt-4 p-4">
       {OVERVIEW.map((data) => {
-        return <ListItem {...data} />;
+        return (
+          <ListItem
+            {...data}
+            withTooltip={data.label.length > 5}
+            info={data.label}
+          />
+        );
       })}
     </div>
   );

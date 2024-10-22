@@ -22,11 +22,11 @@ const TabButton = ({
       {items.map(({ label, value, ...rest }) => (
         <button
           {...rest}
-          className={`mx-3 p-2 rounded ${className} ${
+          className={`mx-3 p-1.5 rounded hover:bg-black-800 ${
             value === selectedKey
-              ? "text-white bg-black"
-              : "text-black bg-transparent hover:bg-black-800 text-white"
-          }`}
+              ? "text-white bg-black "
+              : " bg-[#f7f7f7] hover:bg-black-800 text-black border"
+          } ${className}`}
           onClick={() => onButtonClick(value)}
         >
           {label}
