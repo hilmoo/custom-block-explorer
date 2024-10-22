@@ -4,6 +4,7 @@ const Home = lazy(() => import("../pages/Home"));
 const BlockList = lazy(() => import("../pages/BlockList"));
 const Transactions = lazy(() => import("../pages/Transactions"));
 const Block = lazy(() => import("../pages/Block"));
+const Transaction = lazy(() => import("../pages/Transaction"));
 
 const routes = [
   {
@@ -35,6 +36,14 @@ const routes = [
     component: (
       <Suspense fallback={<div>Loading Transactions...</div>}>
         <Transactions />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/tx/:hash",
+    component: (
+      <Suspense fallback={<div>Loading Transaction...</div>}>
+        <Transaction />
       </Suspense>
     ),
   },

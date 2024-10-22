@@ -21,9 +21,9 @@ const COLUMNS = [
     title: "Block",
     dataIndex: "block",
     key: "block",
-    render: (blockNumber) => (
-      <Link className="text-[#1677ff]" to={`/tx/${blockNumber}`}>
-        {blockNumber}
+    render: (txHash) => (
+      <Link className="text-[#1677ff]" to={`/tx/${txHash}`}>
+        {txHash}
       </Link>
     ),
   },
