@@ -7,6 +7,7 @@ import AddressOverview from "../containers/Address/AddressOverview";
 import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
+import AddressContractSection from "../containers/Address/AddressContractSection";
 
 const AddressPage = () => {
   const { address } = useParams();
@@ -33,7 +34,11 @@ const AddressPage = () => {
         </div>
 
         <div>
-          <AddressSection />
+          {/* For Address */}
+          {/* <AddressSection />  */}
+
+          {/* For Contracts */}
+          <AddressContractSection />
         </div>
       </div>
     </div>
