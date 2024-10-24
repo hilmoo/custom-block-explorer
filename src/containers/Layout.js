@@ -57,7 +57,7 @@ const AppLayout = () => {
   };
   return (
     <Layout className="font-varela ">
-      <Header className="flex sticky w-100 align-item-center z-1 top-0 bg-black text-white">
+      <Header className="flex sticky w-100 align-item-center z-[999] top-0 bg-black text-white">
         <div className="demo-logo" />
         <Menu
           theme="dark"

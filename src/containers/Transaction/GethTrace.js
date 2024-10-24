@@ -64,7 +64,7 @@ const GethTraces = () => {
 
       <Table
         size="large"
-        className="mt-4"
+        className="mt-4 overflow-x-scroll"
         columns={COLUMNS}
         dataSource={dataSource}
         pagination={{

@@ -90,7 +90,7 @@ const Blocks = () => {
         <h4>Total 5,478,146 blocks (Shows recent 10,000 data only) </h4>
         <Table
           size="large"
-          className="mt-4"
+          className="mt-4 overflow-x-scroll"
           columns={COLUMNS}
           dataSource={dataSource}
           pagination={{
