@@ -6,7 +6,7 @@ import Title from "../../components/UI/Title";
 import Button from "../../components/UI/Button";
 import { useNavigate } from "react-router-dom";
 
-const BlockListCard = ({ blocks }) => {
+const BlockListCard = ({ blocks, transactions }) => {
   const navigate = useNavigate();
 
   const onBlockClick = () => {
@@ -17,6 +17,7 @@ const BlockListCard = ({ blocks }) => {
     navigate("/txs");
   };
 
+  console.log({ blocks });
   return (
     <div className="container py-8 mx-auto">
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
@@ -49,7 +50,7 @@ const BlockListCard = ({ blocks }) => {
             />
           </div>
           <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
-            {blocks.map((block, index) => (
+            {transactions.map((block, index) => (
               <BlockCard key={index} {...block} isTransaction />
             ))}
           </div>

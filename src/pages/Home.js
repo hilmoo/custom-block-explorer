@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import SummarySection from "../containers/Home/SummarySection";
 import BlockListSection from "../containers/Home/BlockList";
+import { useLatestBlocks } from "../hooks";
+import { getGasPriceAndRewards } from "../helpers";
 
-const blocks = [
+const blocks1 = [
   {
     blockNumber: "20993917",
     timeAgo: "2 hr ago",
@@ -127,11 +129,33 @@ const blocks = [
 ];
 
 const Home = () => {
+  const { blocks, loading, error } = useLatestBlocks();
+
+  console.log({ blocks, loading, error });
+
+  const blockData = useMemo(() => {
+    let data = [];
+
+    blocks.map((block) => {
+      data.push({
+        blockNumber: block.number,
+        timeStamp: block.timestamp,
+        producer: block.miner,
+        producerLink: "",
+        txns: block.transactions.length,
+        blockLink: ``,
+        ...getGasPriceAndRewards(block),
+      });
+    });
+
+    return data;
+  }, [blocks]);
+
   return (
     <div className="p-6">
       <SummarySection />
 
-      <BlockListSection blocks={blocks} />
+      <BlockListSection blocks={blockData || []} transactions={blocks1} />
     </div>
   );
 };
