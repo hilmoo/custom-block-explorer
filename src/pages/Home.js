@@ -11,14 +11,16 @@ import {
 import { roundUpNumber } from "../utils";
 
 const Home = () => {
-  const { blocks } = useLatestBlocks();
-  const { transactions } = useLatestTransactions();
+  const { blocks, loading: isBlockLoading } = useLatestBlocks();
+  const { transactions, loading: isTransactionLoading } =
+    useLatestTransactions();
   const {
     blockHeight,
     avgGasPrice,
     cumulativeTxCount,
     txn24hVolume,
     txnCost24hVolume,
+    loading: isStatsLoading,
   } = useBlockchainStats();
 
   const blockData = useMemo(() => {
@@ -58,13 +60,18 @@ const Home = () => {
   return (
     <div className="p-6">
       <SummarySection
+        isLoading={isStatsLoading}
         blockHeight={blockHeight}
         avgGasPrice={roundUpNumber(avgGasPrice)}
         cumulativeTxCount={cumulativeTxCount}
         txn24hVolume={txn24hVolume}
         txnCost24hVolume={roundUpNumber(txnCost24hVolume)}
       />
-      <BlockListSection blocks={blockData || []} transactions={txData} />
+      <BlockListSection
+        isLoading={isBlockLoading || isTransactionLoading}
+        blocks={blockData || []}
+        transactions={txData}
+      />
     </div>
   );
 };

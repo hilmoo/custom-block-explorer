@@ -6,7 +6,7 @@ import Title from "../../components/UI/Title";
 import Button from "../../components/UI/Button";
 import { useNavigate } from "react-router-dom";
 
-const BlockListCard = ({ blocks, transactions }) => {
+const BlockListCard = ({ blocks, transactions, isLoading }) => {
   const navigate = useNavigate();
 
   const onBlockClick = () => {
@@ -31,7 +31,7 @@ const BlockListCard = ({ blocks, transactions }) => {
           </div>
           <div className="divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
-              <BlockCard key={index} {...block} />
+              <BlockCard isLoading={isLoading} key={index} {...block} />
             ))}
           </div>
           <div className="px-2 mt-4 mb-0 flex w-full">
@@ -50,7 +50,12 @@ const BlockListCard = ({ blocks, transactions }) => {
           </div>
           <div className="divide-y max-h-[470px] overflow-scroll">
             {transactions.map((block, index) => (
-              <BlockCard key={index} {...block} isTransaction />
+              <BlockCard
+                isLoading={isLoading}
+                key={index}
+                {...block}
+                isTransaction
+              />
             ))}
           </div>
           <div className="px-2 mt-4 mb-0 flex w-full">

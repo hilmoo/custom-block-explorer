@@ -8,6 +8,7 @@ const SummarySection = ({
   cumulativeTxCount,
   txn24hVolume,
   txnCost24hVolume,
+  isLoading,
 }) => {
   return (
     <div className="container py-8 mx-auto">
@@ -15,6 +16,7 @@ const SummarySection = ({
         <Title>Summary</Title>
       </div>
       <SummaryCard
+        isLoading={isLoading}
         blockHeight={blockHeight}
         avgGasPrice={avgGasPrice}
         cumulativeTxCount={cumulativeTxCount}

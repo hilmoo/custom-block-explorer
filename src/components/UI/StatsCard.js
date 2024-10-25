@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const StatsCard = ({ label, value, unit = "", link = "" }) => {
+const StatsCard = ({
+  label,
+  value,
+  unit = "",
+  link = "",
+  isLoading = false,
+}) => {
   return (
-    <div className="p-4 text-center">
+    <div className={`p-4 text-center ${!!isLoading && "animate-pulse"}`}>
       <h3 className="text-gray-600 font-semibold text-sm mb-2">{label}</h3>
       <div className="flex justify-center items-center space-x-2">
         {link ? (

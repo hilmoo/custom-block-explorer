@@ -4,6 +4,8 @@ import { loadFromIndexedDB, saveToIndexedDB } from "../services/dbService";
 import { getSocketProvider } from "../helpers";
 
 export const useBlockchainStats = () => {
+  const [loading, setLoading] = useState(true);
+
   const [blockHeight, setBlockHeight] = useState(0);
   const [avgGasPrice, setAvgGasPrice] = useState("0");
   const [cumulativeTxCount, setCumulativeTxCount] = useState(0);
@@ -33,6 +35,7 @@ export const useBlockchainStats = () => {
       if (storedBlockHeight) setBlockHeight(storedBlockHeight);
       if (storedTxn24hVolume) setTxn24hVolume(storedTxn24hVolume);
       if (storedTxnCost24hVolume) setTxn24hVolume(storedTxnCost24hVolume);
+      setLoading(false);
     };
 
     const fetchHistoricalBlocks = async () => {
@@ -146,5 +149,6 @@ export const useBlockchainStats = () => {
     cumulativeTxCount,
     txn24hVolume,
     txnCost24hVolume,
+    loading,
   };
 };

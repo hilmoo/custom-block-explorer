@@ -21,9 +21,12 @@ const ListCard = ({
   txFrom = "",
   txTo = "",
   isTransaction = false,
+  isLoading = false,
 }) => {
   return (
-    <div className="p-2 rounded-lg relative my-2">
+    <div
+      className={`p-2 rounded-lg relative my-2 ${isLoading && "animate-pulse"}`}
+    >
       <div className="absolute justify-center text-lg items-center top-[25%] left-[3%] hidden md:block">
         {!isTransaction ? "Bk" : "Tk"}
       </div>
