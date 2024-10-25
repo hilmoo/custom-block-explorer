@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { loadFromIndexedDB, saveToIndexedDB } from "../services/dbService";
-
-const provider = new ethers.providers.WebSocketProvider("ws://localhost:8545"); // Hardhat WebSocket endpoint
+import { getSocketProvider } from "../helpers";
 
 export const useBlockchainStats = () => {
   const [blockHeight, setBlockHeight] = useState(0);
@@ -11,6 +10,7 @@ export const useBlockchainStats = () => {
   const [txn24hVolume, setTxn24hVolume] = useState(0);
   const [txnCost24hVolume, setTxnCost24hVolume] = useState(0);
 
+  const provider = getSocketProvider();
   useEffect(() => {
     let totalGasPrice = ethers.BigNumber.from(0);
     let totalCostPrice = ethers.BigNumber.from(0);
