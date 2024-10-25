@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { getProvider } from "../helpers";
 
 export const useLatestTransactions = (transactionCount = 10) => {
@@ -13,9 +12,25 @@ export const useLatestTransactions = (transactionCount = 10) => {
     const fetchLatestTransactions = async () => {
       try {
         setLoading(true);
-        const latestBlock = await provider.getBlockWithTransactions("latest");
-        const txData = latestBlock.transactions.slice(0, transactionCount); // Limit the transactions if needed
-        setTransactions(txData);
+        const blockNumber = await provider.getBlockNumber();
+
+        let txs = [];
+        let count = 0;
+        while (txs.length < transactionCount) {
+          const block = await provider.getBlockWithTransactions(
+            blockNumber - count
+          );
+          count += 1;
+          if (block.transactions.length > transactionCount + txs.length) {
+            txs.push(
+              ...block.transactions.slice(0, transactionCount - txs.length)
+            );
+          } else {
+            txs.push(...block.transactions);
+          }
+        }
+
+        setTransactions(txs);
       } catch (err) {
         setError(err.message);
       } finally {

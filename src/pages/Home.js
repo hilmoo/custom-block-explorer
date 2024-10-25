@@ -1,137 +1,13 @@
 import React, { useMemo } from "react";
 
-import SummarySection from "../containers/Home/SummarySection";
-import BlockListSection from "../containers/Home/BlockList";
-import { useLatestBlocks } from "../hooks";
 import { getGasPriceAndRewards } from "../helpers";
-
-const blocks1 = [
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-  {
-    blockNumber: "20993917",
-    timeAgo: "2 hr ago",
-    producer: "0x51a1...99221712de97",
-    producerLink: "/eth/address/0x51a1449b3b6d635eddec781cd47a99221712de97",
-    txns: "110 txns",
-    reward: "0.02352081 ETH",
-    gasPrice: "20.35 Gwei",
-    blockLink: "/eth/block/20993917",
-  },
-];
+import BlockListSection from "../containers/Home/BlockList";
+import SummarySection from "../containers/Home/SummarySection";
+import { useLatestBlocks, useLatestTransactions } from "../hooks";
 
 const Home = () => {
-  const { blocks, loading, error } = useLatestBlocks();
-
-  console.log({ blocks, loading, error });
+  const { blocks } = useLatestBlocks();
+  const { transactions } = useLatestTransactions();
 
   const blockData = useMemo(() => {
     let data = [];
@@ -151,11 +27,26 @@ const Home = () => {
     return data;
   }, [blocks]);
 
+  const txData = useMemo(() => {
+    let data = [];
+
+    transactions.map((tx) => {
+      data.push({
+        timeStamp: tx.timestamp,
+        txValue: tx.value,
+        txhash: tx.hash,
+        txFrom: tx.from,
+        txTo: tx.to,
+      });
+    });
+
+    return data;
+  }, [transactions]);
+
   return (
     <div className="p-6">
       <SummarySection />
-
-      <BlockListSection blocks={blockData || []} transactions={blocks1} />
+      <BlockListSection blocks={blockData || []} transactions={txData} />
     </div>
   );
 };

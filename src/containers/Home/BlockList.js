@@ -17,7 +17,6 @@ const BlockListCard = ({ blocks, transactions }) => {
     navigate("/txs");
   };
 
-  console.log({ blocks });
   return (
     <div className="container py-8 mx-auto">
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">

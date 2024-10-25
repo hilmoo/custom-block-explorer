@@ -15,8 +15,13 @@ export const useLatestBlocks = (blockCount = 10) => {
         setLoading(true);
         const latestBlockNumber = await provider.getBlockNumber();
         const blockPromises = [];
+        const currentBlockNumber = await provider.getBlockNumber();
 
-        for (let i = 0; i < blockCount; i++) {
+        // We dont need this for real world but need to check For Hardhat
+        const totalBlockCount =
+          currentBlockNumber > blockCount ? blockCount : currentBlockNumber;
+
+        for (let i = 0; i < totalBlockCount; i++) {
           blockPromises.push(
             provider.getBlockWithTransactions(latestBlockNumber - i)
           );

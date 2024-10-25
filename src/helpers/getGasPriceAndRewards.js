@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 
 const getGasPriceAndRewards = (block) => {
-  console.log({ block });
   let totalGasUsed = ethers.BigNumber.from(0);
   let totalGasFees = ethers.BigNumber.from(0);
   let totalGasPrice = ethers.BigNumber.from(0);
@@ -20,7 +19,9 @@ const getGasPriceAndRewards = (block) => {
     totalGasFees: ethers.utils.formatEther(totalGasFees),
     totalGasPrice: totalGasPrice.toString(),
     averageGasPrice: ethers.utils.formatUnits(
-      totalGasPrice.div(block.transactions.length),
+      block.transactions.length
+        ? totalGasPrice.div(block.transactions.length)
+        : 0,
       "gwei"
     ),
     baseFee: ethers.utils.formatUnits(block.baseFeePerGas, "gwei"), // Base fee per gas
