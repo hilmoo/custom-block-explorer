@@ -8,7 +8,7 @@ const StatsCard = ({ label, value, unit = "", link = "" }) => {
       <div className="flex justify-center items-center space-x-2">
         {link ? (
           <div className="flex flex-row items-center">
-            <Link to={link} className="underline flex items-center">
+            <Link to={link} className="flex items-center">
               <span className="font-bold text-xl">{value}</span>
             </Link>
             {unit && <span className="text-sm text-gray-500 ml-1">{unit}</span>}
