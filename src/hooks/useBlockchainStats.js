@@ -37,12 +37,6 @@ export const useBlockchainStats = () => {
 
     const fetchHistoricalBlocks = async () => {
       const latestBlockNumber = await provider.getBlockNumber();
-      const historicalBlockCount = 50; // Fetch the all blocks for initialization
-
-      const totalBlocks =
-        latestBlockNumber < historicalBlockCount
-          ? latestBlockNumber
-          : historicalBlockCount;
 
       for (let i = 0; i < latestBlockNumber; i++) {
         const blockNumber = latestBlockNumber - i;
