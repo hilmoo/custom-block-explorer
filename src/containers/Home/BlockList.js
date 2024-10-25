@@ -29,7 +29,7 @@ const BlockListCard = ({ blocks, transactions }) => {
               onClick={onBlockClick}
             />
           </div>
-          <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
+          <div className="divide-y max-h-[470px] overflow-scroll">
             {blocks.map((block, index) => (
               <BlockCard key={index} {...block} />
             ))}
@@ -48,7 +48,7 @@ const BlockListCard = ({ blocks, transactions }) => {
               onClick={onTransactionClick}
             />
           </div>
-          <div className="space-y-4 divide-y max-h-[470px] overflow-scroll">
+          <div className="divide-y max-h-[470px] overflow-scroll">
             {transactions.map((block, index) => (
               <BlockCard key={index} {...block} isTransaction />
             ))}

@@ -23,12 +23,12 @@ const ListCard = ({
   isTransaction = false,
 }) => {
   return (
-    <div className="p-2 rounded-lg">
-      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
-        <div className="row-span-3 justify-center items-center hidden md:block">
-          <Square2StackIcon className="w-10 h-10" />
-        </div>
-        <div className="">
+    <div className="p-2 rounded-lg relative my-2">
+      <div className="absolute justify-center text-lg items-center top-[25%] left-[3%] hidden md:block">
+        {!isTransaction ? "Bk" : "Tk"}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-8 gap-2 md:ml-12">
+        <div className="col-span-2">
           {!isTransaction ? (
             <Link
               to={`/block/${blockNumber}`}
@@ -47,9 +47,9 @@ const ListCard = ({
         </div>
 
         {!isTransaction ? (
-          <div className="col-span-2">
+          <div className="col-span-4">
             <div className="text-gray-700">
-              <span className="font-semibold text-xs">Producer: </span>
+              <span className="font-semibold">Producer: </span>
               <Link
                 to={`/address/${producer}`}
                 className="text-blue-500 truncate"
@@ -66,7 +66,7 @@ const ListCard = ({
             </div>
           </div>
         ) : (
-          <div className="col-span-2">
+          <div className="col-span-4">
             <div className="text-gray-700">
               <span className="font-semibold">From: &nbsp;</span>
               <Link
