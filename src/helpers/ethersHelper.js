@@ -12,3 +12,10 @@ export const getProvider = () => {
 export const getContract = (contractAddress, abi, signer) => {
   return new ethers.Contract(contractAddress, abi, signer);
 };
+
+export const getSocketProvider = () => {
+  const provider = new ethers.providers.WebSocketProvider(
+    "ws://localhost:8545"
+  );
+  return provider;
+};

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { BanknotesIcon, Square2StackIcon } from "@heroicons/react/24/solid";
 
-import { truncateAddress } from "../../utils";
+import { roundUpNumber, truncateAddress } from "../../utils";
 import { ethers } from "ethers";
 
 dayjs.extend(relativeTime);
@@ -57,11 +57,11 @@ const ListCard = ({
                 {truncateAddress(producer)}
               </Link>
             </div>
-            <div className="flex ">
-              <span className="font-bold">{txns} &nbsp;</span>
+            <div className="flex">
+              <span className="font-bold">{txns} txs &nbsp;</span>
               <div className="text-gray-500">
                 <span className="font-semibold"> Reward: </span>
-                {totalGasFees} ETH
+                {roundUpNumber(totalGasFees)} ETH
               </div>
             </div>
           </div>
@@ -93,11 +93,13 @@ const ListCard = ({
             {!isTransaction && <BanknotesIcon className="w-4 h-4" />}
             {!isTransaction ? (
               <span className="ml-2 font-extrabold">
-                {`${averageGasPrice} Gwei`}
+                {`${roundUpNumber(averageGasPrice)} Gwei`}
               </span>
             ) : (
               <span className="ml-2 font-extrabold">
-                {`${ethers.utils.formatUnits(txValue, "ether")} Eth`}
+                {`${roundUpNumber(
+                  ethers.utils.formatUnits(txValue, "ether")
+                )} Eth`}
               </span>
             )}
           </div>

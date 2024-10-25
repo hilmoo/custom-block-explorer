@@ -3,11 +3,23 @@ import React, { useMemo } from "react";
 import { getGasPriceAndRewards } from "../helpers";
 import BlockListSection from "../containers/Home/BlockList";
 import SummarySection from "../containers/Home/SummarySection";
-import { useLatestBlocks, useLatestTransactions } from "../hooks";
+import {
+  useLatestBlocks,
+  useLatestTransactions,
+  useBlockchainStats,
+} from "../hooks";
+import { roundUpNumber } from "../utils";
 
 const Home = () => {
   const { blocks } = useLatestBlocks();
   const { transactions } = useLatestTransactions();
+  const {
+    blockHeight,
+    avgGasPrice,
+    cumulativeTxCount,
+    txn24hVolume,
+    txnCost24hVolume,
+  } = useBlockchainStats();
 
   const blockData = useMemo(() => {
     let data = [];
@@ -45,7 +57,13 @@ const Home = () => {
 
   return (
     <div className="p-6">
-      <SummarySection />
+      <SummarySection
+        blockHeight={blockHeight}
+        avgGasPrice={roundUpNumber(avgGasPrice)}
+        cumulativeTxCount={cumulativeTxCount}
+        txn24hVolume={txn24hVolume}
+        txnCost24hVolume={roundUpNumber(txnCost24hVolume)}
+      />
       <BlockListSection blocks={blockData || []} transactions={txData} />
     </div>
   );
