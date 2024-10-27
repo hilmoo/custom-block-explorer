@@ -1,10 +1,12 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Modal } from "antd";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
 import routes from "../routes";
 import PageNotFound from "../containers/PageContent";
 import FooterComponent from "../components/UI/Footer";
+import useIsBlockchainReady from "../hooks/useIsBlockchainReady";
+import NoNetworkModal from "../components/NoNetworkModal";
 
 const { Header, Content, Footer } = Layout;
 
@@ -51,10 +53,12 @@ const NAVBAR = [
 
 const AppLayout = () => {
   const navigate = useNavigate();
+  const { isReady, refreshBlockchainData } = useIsBlockchainReady();
 
   const handleMenuClick = (item) => {
-    navigate(item.key); // Navigate to the clicked route
+    navigate(item.key);
   };
+
   return (
     <Layout className="font-varela ">
       <Header className="flex sticky w-100 align-item-center z-[999] top-0 bg-black text-white">
@@ -68,6 +72,7 @@ const AppLayout = () => {
         />
       </Header>
       <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-132px)]">
+        <NoNetworkModal open={!isReady} onOkayClick={refreshBlockchainData} />
         <Routes>
           {routes.map(({ path, component }) => (
             <Route key={path} path={path} element={component} />
