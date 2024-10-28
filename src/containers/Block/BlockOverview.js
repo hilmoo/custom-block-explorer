@@ -90,9 +90,9 @@ const BlockTransaction = ({ block }) => {
         id: "gasUsed",
         label: "Gas used",
         value: `${block.gasUsed} (${(
-          (block.gasUsed / block.gasLimit) * 100 -
+          (block.gasUsed / block.gasLimit) *
           100
-        ).toFixed(2)})`,
+        ).toFixed(2)}%)`,
         type: "string",
         info: "The total Gas used by all transactions in this block (excluding Blob Gas used) and its share in the total Gas limit",
       },

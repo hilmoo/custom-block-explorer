@@ -12,11 +12,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import useBlockData from "../hooks/useBlockData";
 
 const TABS = [
-  { id: 1, label: "Overview", value: "overview" },
-  { id: 1, label: "Transactions", value: "transaction" },
-  { id: 1, label: "Internal Txs", value: "internalTxs" },
-  { id: 1, label: "Token Transfers", value: "tokenTransfer" },
-  { id: 1, label: "Withdrawals", value: "withdrawal" },
+  { id: "overview", label: "Overview", value: "overview" },
+  { id: "transaction", label: "Transactions", value: "transaction" },
+  {
+    id: "internalTxs",
+    label: "Internal Txs",
+    value: "internalTxs",
+    disabled: true,
+  },
+  {
+    id: "tokenTransfer",
+    label: "Token Transfers",
+    value: "tokenTransfer",
+    disabled: true,
+  },
+  {
+    id: "withdrawal",
+    label: "Withdrawals",
+    value: "withdrawal",
+    disabled: true,
+  },
 ];
 
 const Block = () => {
@@ -25,9 +40,8 @@ const Block = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { block, loading } = useBlockData(Number(id));
+  const { block } = useBlockData(Number(id));
 
-  console.log({ block, loading });
   const onTabButtonClick = (id) => {
     setActiveTab(id);
   };

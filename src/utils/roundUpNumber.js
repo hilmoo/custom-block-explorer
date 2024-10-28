@@ -1,2 +1,2 @@
-export const roundUpNumber = (num, decimal = 2) =>
+export const roundUpNumber = (num, decimal = 3) =>
   Number.parseFloat(num).toFixed(decimal);

@@ -26,7 +26,7 @@ const TabButton = ({
             value === selectedKey
               ? "text-white bg-black "
               : " bg-[#f7f7f7] hover:bg-black-800 text-black border"
-          } ${className}`}
+          } ${!!rest.disabled && "cursor-not-allowed"} ${className}`}
           onClick={() => onButtonClick(value)}
         >
           {label}

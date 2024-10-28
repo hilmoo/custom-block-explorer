@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  ClipboardDocumentCheckIcon,
-  DocumentDuplicateIcon,
-} from "@heroicons/react/24/outline";
+import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import Tooltip from "./Tooltip";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 

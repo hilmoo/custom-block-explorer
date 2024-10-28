@@ -1,90 +1,71 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
 import { Link } from "react-router-dom";
-
-const DATA = {
-  key: "1",
-  block: 1,
-  validator: "Mike",
-  date: Date.now(),
-  age: 32,
-  txs: 123,
-  blockSize: 4854,
-  gasUsed: 234,
-  gasLimit: 234,
-  gasPrice: 12,
-  blockRewards: 10,
-};
+import {
+  bnToCurrency,
+  getCurrencyInEth,
+  roundUpNumber,
+  truncateAddress,
+} from "../../utils";
+import { getTxsFees } from "../../helpers";
 
 const COLUMNS = [
   {
-    title: "Block",
-    dataIndex: "block",
-    key: "block",
-    render: (blockNumber) => (
-      <Link className="text-[#1677ff]" to={`/tx/${blockNumber}`}>
-        {blockNumber}
+    title: "Tx Hash",
+    dataIndex: "hash",
+    key: "hash",
+    render: (hash) => (
+      <Link className="text-[#1677ff]" to={`/tx/${hash}`}>
+        {truncateAddress(hash, 10)}
       </Link>
     ),
   },
   {
-    title: "Date time",
-    dataIndex: "date",
-    key: "date",
+    title: "Method",
+    dataIndex: "data",
+    key: "data",
   },
   {
-    title: "Validator",
-    dataIndex: "validator",
-    key: "validator",
-    render: (text) => <span className="font-bold">{text}</span>,
+    title: "From",
+    dataIndex: "from",
+    key: "from",
+    render: (address) => (
+      <span className="font-bold">{truncateAddress(address)}</span>
+    ),
   },
   {
-    title: "Txns",
-    dataIndex: "txs",
-    key: "txs",
+    title: "To",
+    dataIndex: "to",
+    key: "to",
+    render: (address) => (
+      <span className="font-bold">{truncateAddress(address)}</span>
+    ),
   },
   {
-    title: "Block size",
-    dataIndex: "blockSize",
-    key: "blockSize",
+    title: "Amount",
+    dataIndex: "value",
+    key: "value",
+    render: (value) => (
+      <span className="font-bold">{roundUpNumber(bnToCurrency(value))}</span>
+    ),
   },
   {
-    title: "Gas used",
-    dataIndex: "gasUsed",
-    key: "gasUsed",
-  },
-  {
-    title: "Gas limit",
-    dataIndex: "gasLimit",
-    key: "gasLimit",
-  },
-  {
-    title: "Avg. Gas price",
-    dataIndex: "gasPrice",
-    key: "gasPrice",
-    render: (text) => <span className="font-bold">{text}</span>,
-  },
-  {
-    title: "Block rewards",
-    dataIndex: "blockRewards",
-    key: "blockRewards",
+    title: "Txn fee",
+    dataIndex: "txsFee",
+    key: "txsFee",
+    render: (_, tx) => (
+      <span className="font-bold">
+        {roundUpNumber(getCurrencyInEth(getTxsFees(tx))) + " ETH"}
+      </span>
+    ),
   },
 ];
 
-const BlockTransaction = () => {
-  const dataSource = useMemo(() => {
-    let data = [];
-
-    for (let i = 0; i <= Math.random() * 1000; i++) {
-      data.push({ ...DATA, key: i });
-    }
-
-    return data;
-  }, []);
+const BlockTransaction = ({ block }) => {
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
-        <span>Total 155 records</span>
+        <span>Total {block.transactions?.length || 0} records</span>
         <span>Hide zero-amount txns</span>
       </div>
 
@@ -92,7 +73,7 @@ const BlockTransaction = () => {
         size="large"
         className="mt-4 overflow-x-scroll"
         columns={COLUMNS}
-        dataSource={dataSource}
+        dataSource={block?.transactions || []}
         pagination={{
           position: "bottom-right",
         }}
