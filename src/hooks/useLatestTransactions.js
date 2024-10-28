@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { getProvider } from "../helpers";
 
-export const useLatestTransactions = (transactionCount = 10) => {
+export const useLatestTransactions = (
+  pageNumber = 1,
+  transactionCount = 10
+) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,8 +20,13 @@ export const useLatestTransactions = (transactionCount = 10) => {
         let txs = [];
         let blockPromises = [];
         let count = 0;
+        const transactionsToSkip = (pageNumber - 1) * transactionCount;
 
-        while (txs.length < transactionCount && count <= latestBlockNumber) {
+        // Fetch blocks until enough transactions for the page are collected
+        while (
+          txs.length < transactionsToSkip + transactionCount &&
+          count <= latestBlockNumber
+        ) {
           blockPromises.push(
             provider.getBlockWithTransactions(latestBlockNumber - count)
           );
@@ -26,17 +34,31 @@ export const useLatestTransactions = (transactionCount = 10) => {
         }
 
         const blocks = await Promise.all(blockPromises);
+
         blocks.forEach((block) => {
-          if (block.transactions.length + txs.length >= transactionCount) {
+          if (txs.length >= transactionsToSkip + transactionCount) return;
+
+          if (
+            block.transactions.length + txs.length >
+            transactionsToSkip + transactionCount
+          ) {
             txs.push(
-              ...block.transactions.slice(0, transactionCount - txs.length)
+              ...block.transactions.slice(
+                0,
+                transactionsToSkip + transactionCount - txs.length
+              )
             );
           } else {
             txs.push(...block.transactions);
           }
         });
 
-        setTransactions(txs.slice(0, transactionCount)); // Limit to exact transactionCount
+        // Get only the transactions for the current page
+        const pageTransactions = txs.slice(
+          transactionsToSkip,
+          transactionsToSkip + transactionCount
+        );
+        setTransactions(pageTransactions);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -45,7 +67,7 @@ export const useLatestTransactions = (transactionCount = 10) => {
     };
 
     fetchLatestTransactions();
-  }, [transactionCount]);
+  }, [pageNumber, transactionCount]);
 
   return { transactions, loading, error };
 };

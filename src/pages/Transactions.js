@@ -1,101 +1,110 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { Link } from "react-router-dom";
 
-const DATA = {
-  key: "1",
-  block: 1,
-  validator: "Mike",
-  date: Date.now(),
-  age: 32,
-  txs: 123,
-  blockSize: 4854,
-  gasUsed: 234,
-  gasLimit: 234,
-  gasPrice: 12,
-  blockRewards: 10,
-};
+import { useLatestTransactions } from "../hooks";
+import { getTotalTxFromDB, getTxsFees } from "../helpers";
+import {
+  bnToCurrency,
+  getCurrencyInEth,
+  roundUpNumber,
+  truncateAddress,
+} from "../utils";
 
 const COLUMNS = [
   {
-    title: "Block",
-    dataIndex: "block",
-    key: "block",
-    render: (txHash) => (
-      <Link className="text-[#1677ff]" to={`/tx/${txHash}`}>
-        {txHash}
+    title: "Tx Hash",
+    dataIndex: "hash",
+    key: "hash",
+    render: (hash) => (
+      <Link className="text-[#1677ff]" to={`/tx/${hash}`}>
+        {truncateAddress(hash, 10)}
       </Link>
     ),
   },
   {
-    title: "Date time",
-    dataIndex: "date",
-    key: "date",
+    title: "Method",
+    dataIndex: "data",
+    key: "data",
+    render: (address) => (
+      <span className="font-bold">{truncateAddress(address)}</span>
+    ),
   },
   {
-    title: "Validator",
-    dataIndex: "validator",
-    key: "validator",
-    render: (text) => <span className="font-bold">{text}</span>,
+    title: "From",
+    dataIndex: "from",
+    key: "from",
+    render: (address) => (
+      <span className="font-bold">{truncateAddress(address)}</span>
+    ),
   },
   {
-    title: "Txns",
-    dataIndex: "txs",
-    key: "txs",
+    title: "To",
+    dataIndex: "to",
+    key: "to",
+    render: (address) => (
+      <span className="font-bold">
+        {!!address ? truncateAddress(address) : "Create: Contract"}
+      </span>
+    ),
   },
   {
-    title: "Block size",
-    dataIndex: "blockSize",
-    key: "blockSize",
+    title: "Amount",
+    dataIndex: "value",
+    key: "value",
+    render: (value) => (
+      <span className="font-bold">{roundUpNumber(bnToCurrency(value))}</span>
+    ),
   },
   {
-    title: "Gas used",
-    dataIndex: "gasUsed",
-    key: "gasUsed",
-  },
-  {
-    title: "Gas limit",
-    dataIndex: "gasLimit",
-    key: "gasLimit",
-  },
-  {
-    title: "Avg. Gas price",
-    dataIndex: "gasPrice",
-    key: "gasPrice",
-    render: (text) => <span className="font-bold">{text}</span>,
-  },
-  {
-    title: "Block rewards",
-    dataIndex: "blockRewards",
-    key: "blockRewards",
+    title: "Txn fee",
+    dataIndex: "txsFee",
+    key: "txsFee",
+    render: (_, tx) => (
+      <span className="font-bold">
+        {roundUpNumber(getCurrencyInEth(getTxsFees(tx))) + " ETH"}
+      </span>
+    ),
   },
 ];
 
 const Transactions = () => {
-  const dataSource = useMemo(() => {
-    let data = [];
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalTx, setTotalTx] = useState(0);
 
-    for (let i = 0; i <= Math.random() * 1000; i++) {
-      data.push({ ...DATA, key: i });
-    }
+  const { transactions } = useLatestTransactions(pageNumber);
 
-    return data;
-  }, []);
+  console.log({ transactions });
+
+  useEffect(() => {
+    const fetchTotalTx = async () => {
+      const txCount = await getTotalTxFromDB();
+      setTotalTx(txCount);
+    };
+
+    fetchTotalTx();
+  }, [pageNumber]);
+
+  const onTableChange = (pagination) => {
+    setPageNumber(() => pagination.current);
+  };
+
   return (
     <div className="p-6">
       <h1 className="ml-2 font-varela font-bold text-xl mx-auto">Large txns</h1>
       <div className="mt-10 p-2">
-        <h4>
-          Total 1,185,874 transactions within the latest 24 hours (Shows recent
-          10,000 data only)
-        </h4>
+        <h4>Total {totalTx} transactions</h4>
         <Table
           size="large"
           className="mt-4 overflow-x-scroll"
           columns={COLUMNS}
-          dataSource={dataSource}
+          dataSource={transactions || []}
+          onChange={onTableChange}
           pagination={{
             position: "bottom-right",
+            current: pageNumber,
+            pageSize: 10,
+            total: totalTx,
           }}
         />
       </div>
