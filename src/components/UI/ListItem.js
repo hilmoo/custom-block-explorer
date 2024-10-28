@@ -17,12 +17,12 @@ const ListItem = ({ label, value, info = "", showCopy = false }) => {
     <div className="grid grid-cols-5 gap-4 p-2">
       {!!info ? (
         <Tooltip text={info}>
-          <span className="cursor-pointer font-bold text-gray-600">
+          <span className="cursor-pointer font-bold text-gray-500">
             {label}
           </span>
         </Tooltip>
       ) : (
-        <div className="col-span-5 sm:col-span-1">
+        <div className="col-span-5 sm:col-span-1 text-gray-500">
           <div className="">{label}:</div>
         </div>
       )}

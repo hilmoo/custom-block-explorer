@@ -50,7 +50,7 @@ const BlockTransaction = ({ transaction }) => {
       {
         id: "from",
         label: "From Address",
-        value: "0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97",
+        value: `${transaction.from}`,
         type: "string",
         showCopy: true,
       },
@@ -61,7 +61,7 @@ const BlockTransaction = ({ transaction }) => {
       },
       {
         label: "To Address",
-        value: "0xe082b284a7e3ccee3765c29283a622fb5eadc92a",
+        value: !!transaction.to ? transaction.to : transaction.creates,
         type: "string",
         info: "The receiver of this transaction",
         showCopy: true,
