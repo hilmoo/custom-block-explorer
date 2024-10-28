@@ -1,30 +1,33 @@
 import { useState, useEffect } from "react";
 import { getProvider } from "../helpers";
 
-export const useLatestBlocks = (blockCount = 10) => {
+export const useLatestBlocks = (pageNumber = 1, blockCount = 10) => {
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalBlocks, setTotalBlocks] = useState(0);
 
   useEffect(() => {
     const provider = getProvider();
-    if (!provider) {
-      setError("Provider not available");
-      setLoading(false);
-      return;
-    }
 
-    const fetchLatestBlocks = async () => {
+    const fetchBlocks = async () => {
       try {
         setLoading(true);
         const latestBlockNumber = await provider.getBlockNumber();
+        setTotalBlocks(latestBlockNumber);
+        const blockPromises = [];
 
-        const totalBlockCount = Math.min(blockCount, latestBlockNumber + 1);
-        const blockPromises = Array.from({ length: totalBlockCount }, (_, i) =>
-          provider.getBlockWithTransactions(latestBlockNumber - i)
-        );
+        const startBlockNumber =
+          latestBlockNumber - (pageNumber - 1) * blockCount;
+        const endBlockNumber = Math.max(startBlockNumber - blockCount + 1, 0);
+
+        for (let i = startBlockNumber; i >= endBlockNumber; i--) {
+          blockPromises.push(provider.getBlockWithTransactions(i));
+        }
 
         const blockData = await Promise.all(blockPromises);
+
+        // setBlocks((prevBlocks) => [...prevBlocks, ...blockData]);
         setBlocks(blockData);
       } catch (err) {
         setError(err.message);
@@ -33,8 +36,8 @@ export const useLatestBlocks = (blockCount = 10) => {
       }
     };
 
-    fetchLatestBlocks();
-  }, [blockCount]);
+    fetchBlocks();
+  }, [pageNumber, blockCount]);
 
-  return { blocks, loading, error };
+  return { blocks, loading, error, totalBlocks };
 };
