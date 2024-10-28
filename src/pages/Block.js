@@ -9,6 +9,7 @@ import InternalTransaction from "../containers/Block/InternalTransaction";
 import TokenTransfer from "../containers/Block/TokenTransfer";
 import Withdrawals from "../containers/Block/Withdrawals";
 import { useNavigate, useParams } from "react-router-dom";
+import useBlockData from "../hooks/useBlockData";
 
 const TABS = [
   { id: 1, label: "Overview", value: "overview" },
@@ -24,6 +25,9 @@ const Block = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { block, loading } = useBlockData(Number(id));
+
+  console.log({ block, loading });
   const onTabButtonClick = (id) => {
     setActiveTab(id);
   };
@@ -40,17 +44,17 @@ const Block = () => {
 
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "overview") {
-      return <BlockOverview />;
+      return <BlockOverview block={block} />;
     } else if (activeTab === "transaction") {
-      return <BlockTransactions />;
+      return <BlockTransactions block={block} />;
     } else if (activeTab === "internalTxs") {
-      return <InternalTransaction />;
+      return <InternalTransaction block={block} />;
     } else if (activeTab === "tokenTransfer") {
-      return <TokenTransfer />;
+      return <TokenTransfer block={block} />;
     } else {
-      return <Withdrawals />;
+      return <Withdrawals block={block} />;
     }
-  }, [activeTab]);
+  }, [activeTab, id, block]);
 
   return (
     <div className="p-6">
