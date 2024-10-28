@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { getProvider } from "../helpers";
 
 export const useLatestBlocks = (blockCount = 10) => {
@@ -9,23 +8,21 @@ export const useLatestBlocks = (blockCount = 10) => {
 
   useEffect(() => {
     const provider = getProvider();
+    if (!provider) {
+      setError("Provider not available");
+      setLoading(false);
+      return;
+    }
 
     const fetchLatestBlocks = async () => {
       try {
         setLoading(true);
         const latestBlockNumber = await provider.getBlockNumber();
-        const blockPromises = [];
-        const currentBlockNumber = await provider.getBlockNumber();
 
-        // We dont need this for real world but need to check For Hardhat
-        const totalBlockCount =
-          currentBlockNumber > blockCount ? blockCount : currentBlockNumber;
-
-        for (let i = 0; i < totalBlockCount; i++) {
-          blockPromises.push(
-            provider.getBlockWithTransactions(latestBlockNumber - i)
-          );
-        }
+        const totalBlockCount = Math.min(blockCount, latestBlockNumber + 1);
+        const blockPromises = Array.from({ length: totalBlockCount }, (_, i) =>
+          provider.getBlockWithTransactions(latestBlockNumber - i)
+        );
 
         const blockData = await Promise.all(blockPromises);
         setBlocks(blockData);

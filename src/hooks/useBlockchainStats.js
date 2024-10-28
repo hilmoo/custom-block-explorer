@@ -5,143 +5,124 @@ import { getSocketProvider } from "../helpers";
 
 export const useBlockchainStats = () => {
   const [loading, setLoading] = useState(true);
-
   const [blockHeight, setBlockHeight] = useState(0);
   const [avgGasPrice, setAvgGasPrice] = useState("0");
   const [cumulativeTxCount, setCumulativeTxCount] = useState(0);
   const [txn24hVolume, setTxn24hVolume] = useState(0);
-  const [txnCost24hVolume, setTxnCost24hVolume] = useState(0);
+  const [txnCost24hVolume, setTxnCost24hVolume] = useState("0");
 
   const provider = getSocketProvider();
+
   useEffect(() => {
-    let totalGasPrice = ethers.BigNumber.from(0);
-    let totalCostPrice = ethers.BigNumber.from(0);
-    let blockCount = 0;
-    let transactionData = [];
     let cumulativeTransactions = 0;
+    let transactionData = [];
 
-    // Load data from IndexedDB
-    const loadData = async () => {
-      const storedTxCount = await loadFromIndexedDB("cumulativeTxCount");
-      const storedGasPrice = await loadFromIndexedDB("avgGasPrice");
-      const storedBlockHeight = await loadFromIndexedDB("blockHeight");
-      const storedTxn24hVolume = await loadFromIndexedDB("txn24hVolume");
-      const storedTxnCost24hVolume = await loadFromIndexedDB(
-        "setTxnCost24hVolume"
+    // Load existing data from IndexedDB
+    const loadDataFromIndexedDB = async () => {
+      const storedTxCount = (await loadFromIndexedDB("cumulativeTxCount")) || 0;
+      const storedBlockHeight = (await loadFromIndexedDB("blockHeight")) || 0;
+      const storedTxn24hVolume = (await loadFromIndexedDB("txn24hVolume")) || 0;
+      const storedTxnCost24hVolume =
+        (await loadFromIndexedDB("txnCost24hVolume")) || "0";
+      const storedGasPriceTotal =
+        (await loadFromIndexedDB("avgGasPrice")) || "0";
+
+      // Initialize states with stored values
+      setCumulativeTxCount(storedTxCount);
+      setTxn24hVolume(storedTxn24hVolume);
+      setTxnCost24hVolume(
+        ethers.utils.formatUnits(storedTxnCost24hVolume, "ether")
       );
+      setBlockHeight(storedBlockHeight);
+      setAvgGasPrice(ethers.utils.formatUnits(storedGasPriceTotal, "gwei"));
 
-      if (storedTxCount) setCumulativeTxCount(storedTxCount);
-      if (storedGasPrice) setAvgGasPrice(storedGasPrice);
-      if (storedBlockHeight) setBlockHeight(storedBlockHeight);
-      if (storedTxn24hVolume) setTxn24hVolume(storedTxn24hVolume);
-      if (storedTxnCost24hVolume) setTxn24hVolume(storedTxnCost24hVolume);
+      cumulativeTransactions = storedTxCount;
+
       setLoading(false);
     };
 
-    const fetchHistoricalBlocks = async () => {
+    const fetchAndCalculateNewBlocks = async () => {
       const latestBlockNumber = await provider.getBlockNumber();
+      const lastStoredBlock = (await loadFromIndexedDB("blockHeight")) || 0;
 
-      for (let i = 0; i < latestBlockNumber; i++) {
-        const blockNumber = latestBlockNumber - i;
+      // Check if there are new blocks to process
+      if (latestBlockNumber <= lastStoredBlock) return;
+
+      let newTransactionsCount = 0;
+      let newGasPriceTotal = ethers.BigNumber.from(0);
+      let newCostTotal = ethers.BigNumber.from(0);
+      let newTransactionCount = 0;
+
+      // Fetch and process only the new blocks
+      for (
+        let blockNumber = lastStoredBlock + 1;
+        blockNumber <= latestBlockNumber;
+        blockNumber++
+      ) {
         const block = await provider.getBlockWithTransactions(blockNumber);
 
-        cumulativeTransactions += block.transactions.length;
+        if (block.transactions.length > 0) {
+          newTransactionsCount += block.transactions.length;
 
-        block.transactions.forEach((tx) => {
-          totalGasPrice = totalGasPrice.add(tx.gasPrice);
-          totalCostPrice = totalCostPrice.add(tx.value);
-        });
-        blockCount++;
+          block.transactions.forEach((tx) => {
+            newGasPriceTotal = newGasPriceTotal.add(
+              tx.gasPrice || ethers.BigNumber.from(0)
+            );
+            newCostTotal = newCostTotal.add(
+              tx.value || ethers.BigNumber.from(0)
+            );
+            newTransactionCount++;
+          });
 
-        transactionData.push({
-          blockNumber,
-          txCount: block.transactions.length,
-          timestamp: Date.now(),
-        });
+          // Add each transaction to `transactionData` for 24-hour tracking
+          transactionData.push(
+            ...block.transactions.map((tx) => ({
+              value: tx.value,
+              gasPrice: tx.gasPrice,
+              timestamp: Date.now(),
+            }))
+          );
+        }
       }
 
-      const avgGas = totalGasPrice.div(blockCount);
-      setBlockHeight(latestBlockNumber);
-      setAvgGasPrice(ethers.utils.formatUnits(avgGas, "gwei"));
-      setCumulativeTxCount(cumulativeTransactions);
-      setTxn24hVolume(transactionData.reduce((sum, tx) => sum + tx.txCount, 0));
-      setTxnCost24hVolume(ethers.utils.formatUnits(totalCostPrice));
+      // Calculate average gas price only for new transactions
+      const avgGas =
+        newTransactionCount > 0
+          ? newGasPriceTotal.div(newTransactionCount)
+          : ethers.BigNumber.from(0);
 
-      // Save initial data to IndexedDB
-      await saveToIndexedDB("cumulativeTxCount", cumulativeTransactions);
-      await saveToIndexedDB(
-        "avgGasPrice",
-        ethers.utils.formatUnits(avgGas, "gwei")
-      );
-      await saveToIndexedDB("blockHeight", latestBlockNumber);
-      await saveToIndexedDB(
-        "txn24hVolume",
-        transactionData.reduce((sum, tx) => sum + tx.txCount, 0)
-      );
-      await saveToIndexedDB(
-        "txnCost24hVolume",
-        ethers.utils.formatUnits(totalCostPrice)
-      );
-    };
-
-    const handleBlock = async (blockNumber) => {
-      const block = await provider.getBlockWithTransactions(blockNumber);
-
-      // Update cumulative transaction count
-      cumulativeTransactions += block.transactions.length;
-      setCumulativeTxCount(cumulativeTransactions);
-      await saveToIndexedDB("cumulativeTxCount", cumulativeTransactions);
-
-      // Update average gas price calculation
-      block.transactions.forEach((tx) => {
-        totalGasPrice = totalGasPrice.add(tx.gasPrice);
-        totalCostPrice = totalCostPrice.add(tx.value);
-      });
-      blockCount++;
-      const avgGas = totalGasPrice.div(blockCount);
-      setAvgGasPrice(ethers.utils.formatUnits(avgGas, "gwei"));
-      setTxnCost24hVolume(ethers.utils.formatUnits(avgGas, "gwei"));
-      await saveToIndexedDB(
-        "txnCost24hVolume",
-        ethers.utils.formatUnits(totalCostPrice)
-      );
-      await saveToIndexedDB(
-        "avgGasPrice",
-        ethers.utils.formatUnits(avgGas, "gwei")
-      );
-
-      // Store recent transactions for 24-hour volume tracking
-      transactionData.push({
-        blockNumber,
-        txCount: block.transactions.length,
-        timestamp: Date.now(),
-      });
-      transactionData = transactionData.filter(
+      // Filter transactions for only the last 24 hours
+      const last24HoursTransactions = transactionData.filter(
         (tx) => Date.now() - tx.timestamp < 24 * 60 * 60 * 1000
-      ); // Keep only 24-hour transactions
-      const txnVolume24h = transactionData.reduce(
-        (sum, tx) => sum + tx.txCount,
-        0
       );
-      setTxn24hVolume(txnVolume24h);
-      await saveToIndexedDB("txn24hVolume", txnVolume24h);
 
-      // Update block height
-      setBlockHeight(blockNumber);
-      await saveToIndexedDB("blockHeight", blockNumber);
+      // Calculate 24-hour transaction volume and ETH volume
+      const txn24hVolume = last24HoursTransactions.length;
+      const txnCost24hVolume = last24HoursTransactions.reduce(
+        (total, tx) => total.add(tx.value),
+        ethers.BigNumber.from(0)
+      );
+
+      // Update state values for display
+      setCumulativeTxCount(cumulativeTransactions + newTransactionsCount);
+      setAvgGasPrice(ethers.utils.formatUnits(avgGas, "gwei"));
+      setTxn24hVolume(txn24hVolume);
+      setTxnCost24hVolume(ethers.utils.formatUnits(txnCost24hVolume, "ether"));
+      setBlockHeight(latestBlockNumber);
+
+      // Save updated values to IndexedDB
+      await saveToIndexedDB(
+        "cumulativeTxCount",
+        cumulativeTransactions + newTransactionsCount
+      );
+      await saveToIndexedDB("avgGasPrice", newGasPriceTotal.toString());
+      await saveToIndexedDB("blockHeight", latestBlockNumber);
+      await saveToIndexedDB("txn24hVolume", txn24hVolume);
+      await saveToIndexedDB("txnCost24hVolume", txnCost24hVolume.toString());
     };
 
-    // Initialize data on component mount
-    loadData().then(fetchHistoricalBlocks);
-
-    // Start listening for new blocks
-    provider.on("block", handleBlock);
-
-    // Clean up on unmount
-    return () => {
-      provider.off("block", handleBlock);
-    };
-  }, []);
+    loadDataFromIndexedDB().then(fetchAndCalculateNewBlocks);
+  }, [provider]);
 
   return {
     blockHeight,

@@ -36,4 +36,23 @@ const loadFromIndexedDB = async (key) => {
   });
 };
 
-export { loadFromIndexedDB, saveToIndexedDB };
+const clearIndexedDB = async () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(DB_NAME);
+    request.onsuccess = () => {
+      console.log(`Database ${DB_NAME} deleted successfully`);
+      resolve();
+    };
+    request.onerror = (event) => {
+      console.error(`Error deleting database: ${event.target.errorCode}`);
+      reject(event);
+    };
+    request.onblocked = () => {
+      console.warn(`Database deletion blocked`);
+    };
+  });
+};
+
+// Usage
+
+export { loadFromIndexedDB, saveToIndexedDB, clearIndexedDB };

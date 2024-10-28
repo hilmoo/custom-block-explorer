@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { getProvider } from "../helpers";
+import { clearIndexedDB } from "../services/dbService";
 
 const useIsBlockchainReady = () => {
   const [isReady, setIsReady] = useState(false);
@@ -12,23 +13,28 @@ const useIsBlockchainReady = () => {
     try {
       setLoading(true);
       const provider = getProvider();
+
+      if (!provider) {
+        clearIndexedDB();
+        setError("Blockchain provider not available.");
+        setIsReady(false);
+        return;
+      }
+
       const network = await provider.detectNetwork();
-      console.log({
-        provider,
-        network,
-        test: !!provider && !!network?.chainId,
-      });
-      if (!!provider && !!network?.chainId) {
+
+      if (network && network.chainId) {
         setNetwork(network);
         setIsReady(true);
       } else {
-        setError("Provider not found");
+        setError("Failed to detect network. Chain ID is missing.");
         setIsReady(false);
       }
     } catch (err) {
       console.log({ err });
+      clearIndexedDB();
       setIsReady(false);
-      setError(err.message);
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }

@@ -12,25 +12,31 @@ export const useLatestTransactions = (transactionCount = 10) => {
     const fetchLatestTransactions = async () => {
       try {
         setLoading(true);
-        const blockNumber = await provider.getBlockNumber();
+        const latestBlockNumber = await provider.getBlockNumber();
 
         let txs = [];
+        let blockPromises = [];
         let count = 0;
-        while (txs.length < transactionCount) {
-          const block = await provider.getBlockWithTransactions(
-            blockNumber - count
+
+        while (txs.length < transactionCount && count <= latestBlockNumber) {
+          blockPromises.push(
+            provider.getBlockWithTransactions(latestBlockNumber - count)
           );
-          count += 1;
-          if (block.transactions.length > transactionCount + txs.length) {
+          count++;
+        }
+
+        const blocks = await Promise.all(blockPromises);
+        blocks.forEach((block) => {
+          if (block.transactions.length + txs.length >= transactionCount) {
             txs.push(
               ...block.transactions.slice(0, transactionCount - txs.length)
             );
           } else {
             txs.push(...block.transactions);
           }
-        }
+        });
 
-        setTransactions(txs);
+        setTransactions(txs.slice(0, transactionCount)); // Limit to exact transactionCount
       } catch (err) {
         setError(err.message);
       } finally {

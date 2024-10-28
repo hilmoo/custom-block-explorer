@@ -53,7 +53,7 @@ const NAVBAR = [
 
 const AppLayout = () => {
   const navigate = useNavigate();
-  const { isReady, refreshBlockchainData } = useIsBlockchainReady();
+  const { isReady, refreshBlockchainData, loading } = useIsBlockchainReady();
 
   const handleMenuClick = (item) => {
     navigate(item.key);
@@ -72,7 +72,10 @@ const AppLayout = () => {
         />
       </Header>
       <Content className="xl:px-50 lg:px-32 md:px-16 sm:px-6 min-h-[calc(100vh-132px)]">
-        <NoNetworkModal open={!isReady} onOkayClick={refreshBlockchainData} />
+        <NoNetworkModal
+          open={!loading && !isReady}
+          onOkayClick={refreshBlockchainData}
+        />
         <Routes>
           {routes.map(({ path, component }) => (
             <Route key={path} path={path} element={component} />

@@ -8,7 +8,8 @@ const NoNetworkModal = ({ open, onOkayClick }) => {
       centered
       closable={false}
       open={open}
-      style={{ borderRadius: "1px" }}
+      okText="Retry"
+      style={{ border: "1px solid black", borderRadius: "8px" }}
       onOk={onOkayClick}
     >
       <p>
