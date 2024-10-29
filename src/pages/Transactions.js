@@ -91,7 +91,9 @@ const Transactions = () => {
 
   return (
     <div className="p-6">
-      <h1 className="ml-2 font-varela font-bold text-xl mx-auto">Large txns</h1>
+      <h1 className="ml-2 font-varela font-bold text-xl mx-auto">
+        Latest Transactions
+      </h1>
       <div className="mt-10 p-2">
         <h4>Total {totalTx} transactions</h4>
         <Table

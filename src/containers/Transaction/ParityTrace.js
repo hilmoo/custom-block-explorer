@@ -2,6 +2,8 @@ import React from "react";
 import ListItem from "../../components/UI/ListItem";
 import Divider from "../../components/UI/Divider";
 
+import { useParityTraceTransaction } from "../../hooks";
+
 const OVERVIEW = [
   {
     action: 1,
@@ -48,7 +50,10 @@ const OVERVIEW = [
   },
 ];
 
-const ParityTrace = () => {
+const ParityTrace = ({ transaction }) => {
+  const { trace } = useParityTraceTransaction(transaction.hash);
+
+  console.log({ trace });
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">

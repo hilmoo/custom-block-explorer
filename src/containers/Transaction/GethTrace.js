@@ -1,15 +1,6 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
-
-const DATA = {
-  key: "1",
-  step: 2,
-  pc: 0,
-  operation: "PUSH1",
-  gasLimit: 1001,
-  gasCost: 34,
-  depth: 1,
-};
+import { useTransactionTrace } from "../../hooks";
 
 const COLUMNS = [
   {
@@ -24,13 +15,13 @@ const COLUMNS = [
   },
   {
     title: "Operation",
-    dataIndex: "operation",
+    dataIndex: "op",
     key: "operation",
     render: (text) => <span className="font-bold">{text}</span>,
   },
   {
     title: "Gas limit",
-    dataIndex: "gasLimit",
+    dataIndex: "gas",
     key: "gasLimittxs",
   },
   {
@@ -45,28 +36,31 @@ const COLUMNS = [
   },
 ];
 
-const GethTraces = () => {
-  const dataSource = useMemo(() => {
+const GethTraces = ({ transaction }) => {
+  const { trace } = useTransactionTrace(transaction.hash);
+
+  const traceData = useMemo(() => {
+    if (!trace) return [];
     let data = [];
 
-    for (let i = 0; i <= Math.random() * 1000; i++) {
-      data.push({ ...DATA, key: i });
-    }
+    trace.structLogs?.map((tx, idx) => {
+      data.push({ ...tx, step: `[${idx + 1}]` });
+    });
 
     return data;
-  }, []);
+  }, [trace]);
 
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
-        <span>Total 211 steps</span>
+        <span>Total {trace?.structLogs?.length || 0} steps</span>
       </div>
 
       <Table
         size="large"
         className="mt-4 overflow-x-scroll"
         columns={COLUMNS}
-        dataSource={dataSource}
+        dataSource={traceData}
         pagination={{
           position: "bottom-right",
         }}

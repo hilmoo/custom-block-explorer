@@ -13,10 +13,11 @@ import CopyBlock from "../components/CopyBlock";
 
 const TABS = [
   { id: 1, label: "Overview", value: "overview" },
-  { id: 2, label: "State", value: "state" },
-  { id: 3, label: "Internal Txs", value: "internalTxs" },
   { id: 4, label: "Geth traces", value: "gethTrace" },
-  { id: 5, label: "Parity traces", value: "paratyTrace" },
+
+  { id: 2, label: "State", value: "state", disabled: true },
+  { id: 3, label: "Internal Txs", value: "internalTxs", disabled: true },
+  { id: 5, label: "Parity traces", value: "paratyTrace", disabled: true },
 ];
 
 const Transaction = () => {
@@ -38,9 +39,9 @@ const Transaction = () => {
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     } else if (activeTab === "gethTrace") {
-      return <GethTraces />;
+      return <GethTraces transaction={transaction} />;
     } else {
-      return <ParityTrace />;
+      return <ParityTrace transaction={transaction} />;
     }
   }, [activeTab, transaction]);
 

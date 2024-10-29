@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import Tooltip from "./Tooltip";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import CodeBlock from "./CodeBlock";
 
-const ListItem = ({ label, value, info = "", showCopy = false }) => {
+const ListItem = ({ label, value, info = "", showCopy = false, type = "" }) => {
   const [hasCopied, setHasCopied] = useState(false);
   const onCopyClick = (event) => {
     setHasCopied(true);
@@ -28,7 +29,13 @@ const ListItem = ({ label, value, info = "", showCopy = false }) => {
       )}
       <div className="col-span-5 sm:col-span-4">
         <div className="flex items-center space-x-2">
-          <div className="truncate">{value}</div>
+          {type === "codeblock" ? (
+            <div className="break-all">
+              <CodeBlock label="" content={value} />
+            </div>
+          ) : (
+            <div className="truncate">{value}</div>
+          )}
           {showCopy && !hasCopied ? (
             <div className="cursor-pointer" onClick={onCopyClick}>
               <ClipboardDocumentIcon className="h-4 w-4" />

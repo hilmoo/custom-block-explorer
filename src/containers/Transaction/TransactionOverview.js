@@ -7,6 +7,7 @@ import RelativeTime from "dayjs/plugin/relativeTime";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import Divider from "../../components/UI/Divider";
 import { bnToCurrency, getCurrencyInEth } from "../../utils";
+import CodeBlock from "../../components/UI/CodeBlock";
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(RelativeTime);
@@ -118,12 +119,11 @@ const BlockTransaction = ({ transaction }) => {
         }`,
         type: "string",
       },
-
       {
         id: "data",
         label: "Input Data",
         value: `${transaction?.data}`,
-        type: "string",
+        type: "codeblock",
         info: "The method called by the initiator and the parameters passed in when calling a smart contract. If the contract failed to be verified, the data will display as hexadecimal numbers and cannot be parsed out",
       },
     ];

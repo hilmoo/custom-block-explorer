@@ -23,7 +23,7 @@ const NAVBAR = [
         key: "txs",
         label: "Transactions",
       },
-      { key: "large-txs", label: "Large Txs" },
+      { key: "latest-txs", label: "Latest Transactions" },
       { key: "pending-txs", label: "Pending Txs" },
     ],
   },
