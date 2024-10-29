@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import TabButton from "../../components/UI/TabButton";
 import AddressTransactionTab from "./AddressTransaction/AddressTransactionTab";
 import InternalTransaction from "../Transaction/InternalTransaction";
+import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
@@ -14,7 +15,7 @@ const TABS = [
   { id: 7, label: "Blocks", value: "blocks" },
 ];
 
-const AddressSection = ({ transactions }) => {
+const AddressSection = ({ transactions, tokenTransfers }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
   const onTabButtonClick = (id) => {
@@ -24,10 +25,10 @@ const AddressSection = ({ transactions }) => {
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "transaction") {
       return <AddressTransactionTab transactions={transactions} />;
-    } else if (activeTab === "internalTxs") {
-      return <InternalTransaction />;
+    } else if (activeTab === "tokenTransfers") {
+      return <AddressTokenTransfers transactions={tokenTransfers} />;
     }
-  }, [activeTab, transactions]);
+  }, [activeTab, transactions, tokenTransfers]);
 
   return (
     <div>

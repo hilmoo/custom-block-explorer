@@ -18,6 +18,7 @@ const AddressPage = () => {
     latestTransaction,
     firstTransaction,
     totalTransactions,
+    tokenTransfers,
   } = useAddressTransactionDataV2(address);
 
   return (
@@ -53,7 +54,10 @@ const AddressPage = () => {
 
         <div>
           {/* For Address */}
-          <AddressSection transactions={transactions} />
+          <AddressSection
+            transactions={transactions}
+            tokenTransfers={tokenTransfers}
+          />
 
           {/* For Contracts */}
           {/* <AddressContractSection /> */}

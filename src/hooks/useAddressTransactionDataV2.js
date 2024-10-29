@@ -3,6 +3,9 @@ import { getProvider } from "../helpers";
 import { ethers } from "ethers";
 
 const provider = getProvider();
+const transferEventSignature = ethers.utils.id(
+  "Transfer(address,address,uint256)"
+);
 
 export const useAddressTransactionDataV2 = (address) => {
   const [transactions, setTransactions] = useState([]);
@@ -16,8 +19,9 @@ export const useAddressTransactionDataV2 = (address) => {
     totalBalanceSent: ethers.BigNumber.from(0),
     totalBalanceReceived: ethers.BigNumber.from(0),
   });
+  const [tokenTransfers, setTokenTransfers] = useState([]);
 
-  // Track transaction hashes to avoid duplicates using a ref to persist across renders
+  // Track transaction hashes to avoid duplicates with a persistent reference
   const transactionHashes = useRef(new Set());
 
   // Step 1: Perform binary search to find the first active block of the address
@@ -71,7 +75,7 @@ export const useAddressTransactionDataV2 = (address) => {
     }
   }, [address, firstActiveBlock]);
 
-  // Step 3: Fetch all transactions from the first active block onward
+  // Step 3: Fetch all transactions from the first active block onward, including token transfers
   const fetchTransactions = useCallback(async () => {
     if (firstActiveBlock === null) return;
     setLoading(true);
@@ -79,21 +83,22 @@ export const useAddressTransactionDataV2 = (address) => {
 
     try {
       const latestBlock = await provider.getBlockNumber();
-
       const blockPromises = [];
+
       for (let i = firstActiveBlock; i <= latestBlock; i++) {
         blockPromises.push(provider.getBlockWithTransactions(i));
       }
 
       const blocks = await Promise.all(blockPromises);
       const newTransactions = [];
+      const tokenTransferDetails = [];
       let totalSent = ethers.BigNumber.from(0);
       let totalReceived = ethers.BigNumber.from(0);
       let latestTx = null;
       let firstTx = null;
 
-      blocks.forEach((block) => {
-        block.transactions.forEach((tx) => {
+      for (const block of blocks) {
+        for (const tx of block.transactions) {
           const txHash = tx.hash.toLowerCase();
           if (
             (tx.from.toLowerCase() === address.toLowerCase() ||
@@ -121,9 +126,36 @@ export const useAddressTransactionDataV2 = (address) => {
             if (!firstTx || tx.blockNumber < firstTx.blockNumber) {
               firstTx = tx;
             }
+
+            // Fetch logs from the transaction receipt for token transfers
+            const receipt = await provider.getTransactionReceipt(txHash);
+            receipt.logs.forEach((log) => {
+              if (log.topics[0] === transferEventSignature) {
+                const from = `0x${log.topics[1].slice(26)}`;
+                const to = `0x${log.topics[2].slice(26)}`;
+                const value = ethers.BigNumber.from(log.data);
+
+                // Check if the transaction involves the specified address
+                if (
+                  from.toLowerCase() === address.toLowerCase() ||
+                  to.toLowerCase() === address.toLowerCase()
+                ) {
+                  tokenTransferDetails.push({
+                    from,
+                    to,
+                    value: ethers.utils.formatEther(value),
+                    tokenAddress: log.address,
+                    transactionHash: tx.hash,
+                    hash: tx.hash,
+                    method: tx.data,
+                    tx: { ...tx },
+                  });
+                }
+              }
+            });
           }
-        });
-      });
+        }
+      }
 
       setTransactions((prev) => [...prev, ...newTransactions]);
       setSummary({
@@ -132,6 +164,7 @@ export const useAddressTransactionDataV2 = (address) => {
         totalBalanceSent: totalSent,
         totalBalanceReceived: totalReceived,
       });
+      setTokenTransfers((prev) => [...prev, ...tokenTransferDetails]);
     } catch (error) {
       setError("Failed to fetch transactions");
       console.error(error);
@@ -161,6 +194,8 @@ export const useAddressTransactionDataV2 = (address) => {
     }
   }, [fetchTransactions, firstActiveBlock]);
 
+  console.log({ tokenTransfers });
+
   return {
     transactions,
     loading,
@@ -172,5 +207,6 @@ export const useAddressTransactionDataV2 = (address) => {
     totalBalanceReceived: ethers.utils.formatEther(
       summary.totalBalanceReceived
     ),
+    tokenTransfers,
   };
 };

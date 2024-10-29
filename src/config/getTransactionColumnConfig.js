@@ -8,7 +8,7 @@ import {
 } from "../utils";
 import { getTxsFees } from "../helpers";
 
-export const getTransactionColumnConfig = () => {
+export const getTransactionColumnConfig = (skip = []) => {
   const COLUMNS = [
     {
       title: "Tx Hash",
@@ -66,5 +66,7 @@ export const getTransactionColumnConfig = () => {
     },
   ];
 
-  return COLUMNS;
+  const tableColumns = COLUMNS.filter(({ key }) => !skip.includes(key));
+
+  return tableColumns;
 };
