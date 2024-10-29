@@ -20,6 +20,7 @@ const ListCard = ({
   txhash = "",
   txFrom = "",
   txTo = "",
+  creates = "",
   isTransaction = false,
   isLoading = false,
 }) => {
@@ -82,10 +83,10 @@ const ListCard = ({
             <div className="flex ">
               <span className="font-semibold">To: &nbsp;</span>
               <Link
-                href={`/address/${txTo}`}
+                to={`/address/${!!txTo ? txTo : creates}`}
                 className="text-blue-500 truncate"
               >
-                {truncateAddress(txTo)}
+                {!!txTo ? truncateAddress(txTo) : "Create: Contract"}
               </Link>
             </div>
           </div>

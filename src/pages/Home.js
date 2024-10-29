@@ -51,6 +51,7 @@ const Home = () => {
         txhash: tx.hash,
         txFrom: tx.from,
         txTo: tx.to,
+        ...tx,
       });
     });
 
