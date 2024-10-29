@@ -26,7 +26,6 @@ const Transaction = () => {
   const { hash } = useParams();
   const { transaction } = useTransactionData(hash);
 
-  console.log({ transaction });
   const onTabButtonClick = (id) => {
     setActiveTab(id);
   };

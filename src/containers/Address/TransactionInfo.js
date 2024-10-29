@@ -15,7 +15,7 @@ const TransactionInfo = ({ ethBalance, usdBalance }) => {
 
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
-            <div className="truncate">${usdBalance}</div>
+            <div className="truncate">N/A</div>
           </div>
         </div>
       </div>

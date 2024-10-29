@@ -41,7 +41,9 @@ export const getTransactionColumnConfig = () => {
       dataIndex: "to",
       key: "to",
       render: (address) => (
-        <span className="font-bold">{truncateAddress(address)}</span>
+        <span className="font-bold">
+          {!!address ? truncateAddress(address) : "Create: Contract"}
+        </span>
       ),
     },
     {

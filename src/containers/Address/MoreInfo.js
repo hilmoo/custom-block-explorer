@@ -2,7 +2,7 @@ import React from "react";
 import Tooltip from "../../components/UI/Tooltip";
 import { truncateAddress } from "../../utils";
 
-const MoreInfo = ({ totalTxs, latestTxs, firstTxs }) => {
+const MoreInfo = ({ totalTxs, latestTx, firstTx }) => {
   return (
     <div>
       <h1 className="mt-5 font-varela font-bold text-lg mx-auto">Txn info</h1>
@@ -26,10 +26,9 @@ const MoreInfo = ({ totalTxs, latestTxs, firstTxs }) => {
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
             <div className="truncate">
-              {latestTxs
-                ? truncateAddress(latestTxs)
+              {!!latestTx
+                ? truncateAddress(latestTx?.hash, 10)
                 : "NO TRANSACTIONS RECORDED"}
-              {/* 10/22/2024, 13:46:23 */}
             </div>
           </div>
         </div>
@@ -40,10 +39,9 @@ const MoreInfo = ({ totalTxs, latestTxs, firstTxs }) => {
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
             <div className="truncate">
-              {firstTxs
-                ? truncateAddress(firstTxs)
+              {!!firstTx
+                ? truncateAddress(firstTx?.hash, 10)
                 : "NO TRANSACTIONS RECORDED"}
-              {/* 04/04/2023, 13:08:23 */}
             </div>
           </div>
         </div>

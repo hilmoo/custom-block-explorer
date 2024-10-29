@@ -27,7 +27,7 @@ const AddressSection = ({ transactions }) => {
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     }
-  }, [activeTab]);
+  }, [activeTab, transactions]);
 
   return (
     <div>

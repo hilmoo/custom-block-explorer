@@ -3,9 +3,17 @@ import { Table } from "antd";
 
 import { getTransactionColumnConfig } from "../../../config";
 
-const COLUMNS = [...getTransactionColumnConfig()];
+const COLUMNS = [
+  ...getTransactionColumnConfig(),
+  {
+    title: "Type",
+    dataIndex: "transactionType",
+    key: "transactionType",
+  },
+];
 
 const AddresssTransactionList = ({ transactions }) => {
+  console.log({ transactions });
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">

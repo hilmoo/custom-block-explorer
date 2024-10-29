@@ -8,10 +8,17 @@ import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
 import useAddressData from "../hooks/useAddressData";
+import { useAddressTransactionDataV2 } from "../hooks";
 
 const AddressPage = () => {
   const { address } = useParams();
-  const { summary, transactions } = useAddressData(address);
+  const { summary } = useAddressData(address);
+  const {
+    transactions,
+    latestTransaction,
+    firstTransaction,
+    totalTransactions,
+  } = useAddressTransactionDataV2(address);
 
   return (
     <div className="p-6">
@@ -38,9 +45,9 @@ const AddressPage = () => {
             usdBalance={summary.usdValue}
           />
           <MoreInfo
-            totalTxs={summary.totalTransactions}
-            latestTx={summary.latestTransaction}
-            firstTxs={summary.firstTransaction}
+            totalTxs={totalTransactions || null}
+            latestTx={latestTransaction || null}
+            firstTx={firstTransaction || null}
           />
         </div>
 

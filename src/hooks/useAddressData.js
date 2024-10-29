@@ -24,11 +24,12 @@ const useAddressData = (address, pageNumber = 1, pageSize = 10) => {
       setBalance(ethers.utils.formatEther(balance));
 
       // Fetch ETH/USD price
-      const priceResponse = await axios.get(
-        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
-      );
-      const ethPrice = priceResponse.data.ethereum.usd;
-      setUsdValue((ethers.utils.formatEther(balance) * ethPrice).toFixed(2));
+      //   const priceResponse = await axios.get(
+      //     "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+      //   );
+      //   const ethPrice = priceResponse.data.ethereum.usd;
+      //   setUsdValue((ethers.utils.formatEther(balance) * ethPrice).toFixed(2));
+      setUsdValue(0);
     } catch (error) {
       setError("Failed to fetch balance or price");
       console.error(error);
@@ -57,8 +58,6 @@ const useAddressData = (address, pageNumber = 1, pageSize = 10) => {
         ],
         id: 1,
       });
-
-      console.log({ response });
 
       const newTransactions = response.data.result;
       setTransactions((prev) => [...prev, ...newTransactions]);
