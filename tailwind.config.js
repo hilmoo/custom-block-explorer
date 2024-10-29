@@ -26,6 +26,8 @@ module.exports = {
       "blue-700": "#004cff",
       "blue-800": "#003fd3",
       "blue-900": "#0038ba",
+      "badge-success": "#a7f3d033",
+      "badge-failed": "#FEE2E2",
     },
     extend: {
       colorPrimary: "#000000",

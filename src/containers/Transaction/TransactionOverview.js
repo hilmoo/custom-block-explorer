@@ -19,6 +19,19 @@ const TRANSACTION_TYPE_MAPPER = {
   115: "Blob transaction (EIP-4844), used to carry large amounts of data in transactions (planned for future updates)",
 };
 
+const Badge = ({ status }) => {
+  return (
+    <div
+      class={`text-xs inline-flex items-center leading-sm px-1 py-0.5 rounded border ${
+        !!status
+          ? "bg-badge-success bg-green-200 text-[#00a186]"
+          : "bg-badge-failed bg-red-200 text-[#b91c1c]"
+      }`}
+    >
+      {!!status ? "Success" : "Failed"}
+    </div>
+  );
+};
 const BlockTransaction = ({ transaction }) => {
   const txOverview = useMemo(() => {
     if (!Object.keys(transaction).length) {
@@ -29,7 +42,8 @@ const BlockTransaction = ({ transaction }) => {
       {
         id: "status",
         label: "Status",
-        value: `${transaction.status ? "Success" : "Failed"}`,
+        // value: `${transaction.status ? "Success" : "Failed"}`,
+        value: <Badge status={transaction.status} />,
         type: "string",
       },
       {
