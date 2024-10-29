@@ -7,10 +7,11 @@ import AddressOverview from "../containers/Address/AddressOverview";
 import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
-import AddressContractSection from "../containers/Address/AddressContractSection";
+import useAddressData from "../hooks/useAddressData";
 
 const AddressPage = () => {
   const { address } = useParams();
+  const { summary, transactions } = useAddressData(address);
 
   return (
     <div className="p-6">
@@ -28,17 +29,27 @@ const AddressPage = () => {
         <Divider />
 
         <div className="grid grid-cols-3 gap-4">
-          <AddressOverview />
-          <TransactionInfo />
-          <MoreInfo />
+          <AddressOverview
+            ethBalance={summary.balance}
+            usdBalance={summary.usdValue}
+          />
+          <TransactionInfo
+            ethBalance={summary.balance}
+            usdBalance={summary.usdValue}
+          />
+          <MoreInfo
+            totalTxs={summary.totalTransactions}
+            latestTx={summary.latestTransaction}
+            firstTxs={summary.firstTransaction}
+          />
         </div>
 
         <div>
           {/* For Address */}
-          {/* <AddressSection />  */}
+          <AddressSection transactions={transactions} />
 
           {/* For Contracts */}
-          <AddressContractSection />
+          {/* <AddressContractSection /> */}
         </div>
       </div>
     </div>

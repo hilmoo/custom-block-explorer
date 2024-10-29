@@ -7,3 +7,6 @@ export * from "./useBlockData";
 export * from "./useTransactionData";
 export * from "./useTransactionTrace";
 export * from "./useParityTraceTransaction";
+export * from "./useAddressBalanceData";
+export * from "./useAddressTransactionData";
+export * from "./useAddressData";

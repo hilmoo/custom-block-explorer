@@ -10,11 +10,11 @@ const TABS = [
   { id: 2, label: "Token Transfers", value: "tokenTransfers" },
   { id: 4, label: "NFT Transfers", value: "nftTransfer" },
   { id: 5, label: "Assets", value: "assets" },
-  { id: 5, label: "Ens", value: "ens" },
-  { id: 5, label: "Blocks", value: "blocks" },
+  { id: 6, label: "Ens", value: "ens" },
+  { id: 7, label: "Blocks", value: "blocks" },
 ];
 
-const AddressSection = () => {
+const AddressSection = ({ transactions }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
   const onTabButtonClick = (id) => {
@@ -23,7 +23,7 @@ const AddressSection = () => {
 
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "transaction") {
-      return <AddressTransactionTab />;
+      return <AddressTransactionTab transactions={transactions} />;
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     }

@@ -1,7 +1,7 @@
 import React from "react";
 import Tooltip from "../../components/UI/Tooltip";
 
-const AddressOverview = () => {
+const AddressOverview = ({ ethBalance, usdBalance }) => {
   return (
     <div className="">
       <h1 className="mt-5 font-varela font-bold text-lg mx-auto">Overview</h1>
@@ -15,7 +15,7 @@ const AddressOverview = () => {
 
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
-            <div className="truncate">$35.5</div>
+            <div className="truncate">${usdBalance}</div>
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@ const AddressOverview = () => {
         <span className="cursor-pointer text-gray-500">ETH holdings</span>
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
-            <div className="truncate">14.42965752 ETH</div>
+            <div className="truncate">{ethBalance} ETH</div>
           </div>
         </div>
       </div>
