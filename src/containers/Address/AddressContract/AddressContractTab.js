@@ -3,6 +3,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import CodeBlock from "../../../components/UI/CodeBlock";
 import { truncateAddress } from "../../../utils";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CONTRACT_NAVIGATIONS = [
   {
@@ -33,6 +34,13 @@ const AddressContractTab = ({
   contractCreator,
   contractTxHash,
 }) => {
+  const navigate = useNavigate();
+  const { address } = useParams();
+
+  const onRedirectClick = (to) => {
+    navigate(`${to}/${address}`);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="">
@@ -48,7 +56,7 @@ const AddressContractTab = ({
       </div>
 
       <div className="flex">
-        {CONTRACT_NAVIGATIONS.map(({ label, id, isActive, icon }) => {
+        {CONTRACT_NAVIGATIONS.map(({ label, id, isActive, icon, to }) => {
           return (
             <div>
               <button
@@ -58,6 +66,7 @@ const AddressContractTab = ({
                     ? "bg-black text-white "
                     : "bg-white text-black hover:bg-gray-800 hover:text-white"
                 }`}
+                onClick={() => onRedirectClick(to)}
               >
                 {label} {!!icon && icon}
               </button>
