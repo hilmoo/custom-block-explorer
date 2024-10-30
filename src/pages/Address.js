@@ -21,9 +21,10 @@ const AddressPage = () => {
     totalTransactions,
     tokenTransfers,
     nftTransfers,
-  } = useAddressTransactionDataV2(address);
+    contractDetails,
+  } = useAddressTransactionDataV2(address, isContractAddress);
 
-  console.log({ isContractAddress });
+  console.log({ firstTransaction });
 
   return (
     <div className="p-6">
@@ -56,7 +57,11 @@ const AddressPage = () => {
               firstTx={firstTransaction || null}
             />
           ) : (
-            <ContractInfo />
+            <ContractInfo
+              address={address}
+              creator={contractDetails?.from}
+              txHash={contractDetails?.hash}
+            />
           )}
         </div>
 
