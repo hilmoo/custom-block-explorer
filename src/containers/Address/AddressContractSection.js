@@ -21,6 +21,10 @@ const AddressContractSection = ({
   transactions,
   tokenTransfers,
   nftTransfers,
+  deploymentCode,
+  creationCode,
+  contractCreator,
+  contractTxHash,
 }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
@@ -38,7 +42,14 @@ const AddressContractSection = ({
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     } else if (activeTab === "contracts") {
-      return <AddressContractTab />;
+      return (
+        <AddressContractTab
+          creationCode={creationCode}
+          deploymentCode={deploymentCode}
+          contractTxHash={contractTxHash}
+          contractCreator={contractCreator}
+        />
+      );
     }
   }, [activeTab, transactions, tokenTransfers, nftTransfers]);
 

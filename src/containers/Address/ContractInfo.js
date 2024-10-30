@@ -4,8 +4,7 @@ import { truncateAddress } from "../../utils";
 import { useContractDetails } from "../../hooks";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
 
-const ContractInfo = ({ creator, txHash, address }) => {
-  const { contractDetails } = useContractDetails(address);
+const ContractInfo = ({ creator, txHash, tokenInfo }) => {
   return (
     <div>
       <h1 className="mt-5 font-varela font-bold text-lg mx-auto">
@@ -33,7 +32,7 @@ const ContractInfo = ({ creator, txHash, address }) => {
             <div className="flex truncate items-center">
               <BanknotesIcon className="w-4 h-4" />
               &nbsp;
-              {`${contractDetails?.tokenInfo?.symbol} (${contractDetails?.tokenInfo?.name})`}
+              {`${tokenInfo?.symbol} (${tokenInfo?.name})`}
             </div>
           </div>
         </div>

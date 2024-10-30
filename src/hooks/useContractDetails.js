@@ -25,13 +25,13 @@ const DEFI_ABI = [
 export const useContractDetails = (address) => {
   const [contractDetails, setContractDetails] = useState({
     type: "Unknown",
-
+    deploymentCode: null,
     defiFeatures: null,
   });
 
   const fetchContractDetails = useCallback(async () => {
     try {
-      // Step 3: Check contract type
+      const bytecode = await provider.getCode(address);
       let contractType = "Unknown";
       let tokenInfo = null;
       let defiFeatures = null;
@@ -95,6 +95,7 @@ export const useContractDetails = (address) => {
         type: contractType,
         tokenInfo,
         defiFeatures,
+        deploymentCode: bytecode,
       });
     } catch (error) {
       console.error("Error fetching contract details:", error);
