@@ -5,16 +5,23 @@ import InternalTransaction from "../Transaction/InternalTransaction";
 import AddressContractTab from "./AddressContract/AddressContractTab";
 import AddressTransactionTab from "./AddressTransaction/AddressTransactionTab";
 import Divider from "../../components/UI/Divider";
+import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
+import AddressNFTTransfers from "./AddressTransaction/AddressNFTTransfers";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
-  { id: 3, label: "Internal Txs", value: "internalTxs" },
-  { id: 2, label: "Token Transfers", value: "tokenTransfers" },
+  { id: 2, label: "Token Transfers (ERC 20)", value: "tokenTransfers" },
+  { id: 6, label: "NFT Transfers ", value: "nftTransfers" },
   { id: 4, label: "Contracts", value: "contracts" },
-  { id: 5, label: "Assets", value: "assets" },
+  { id: 3, label: "Internal Txs", value: "internalTxs", disabled: true },
+  { id: 5, label: "Assets", value: "assets", disabled: true },
 ];
 
-const AddressContractSection = () => {
+const AddressContractSection = ({
+  transactions,
+  tokenTransfers,
+  nftTransfers,
+}) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
   const onTabButtonClick = (id) => {
@@ -23,13 +30,17 @@ const AddressContractSection = () => {
 
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "transaction") {
-      return <AddressTransactionTab />;
+      return <AddressTransactionTab transactions={transactions} />;
+    } else if (activeTab === "tokenTransfers") {
+      return <AddressTokenTransfers transactions={tokenTransfers} />;
+    } else if (activeTab === "nftTransfers") {
+      return <AddressNFTTransfers transactions={nftTransfers} />;
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     } else if (activeTab === "contracts") {
       return <AddressContractTab />;
     }
-  }, [activeTab]);
+  }, [activeTab, transactions, tokenTransfers, nftTransfers]);
 
   return (
     <div>

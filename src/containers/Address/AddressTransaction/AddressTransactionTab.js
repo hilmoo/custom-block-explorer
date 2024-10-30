@@ -5,7 +5,7 @@ import AddresssTransactionList from "./AddresssTransactionList";
 const AddressTransactionTab = ({ transactions }) => {
   return (
     <div>
-      <AddresssTransactionSummary totalTxs={transactions.length} />
+      <AddresssTransactionSummary totalTxs={transactions?.length} />
       <AddresssTransactionList transactions={transactions} />
     </div>
   );

@@ -10,12 +10,15 @@ export const useAddressData = (address) => {
   const [usdValue, setUsdValue] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isContractAddress, setIsContractAddress] = useState(false);
 
   // Fetch ETH Balance and USD Value
   const fetchBalanceAndUsdValue = useCallback(async () => {
     try {
       if (!address) return;
       setLoading(true);
+      const code = await provider.getCode(address);
+      setIsContractAddress(code != "0x");
       const balance = await provider.getBalance(address);
       setBalance(ethers.utils.formatEther(balance));
 
@@ -46,5 +49,6 @@ export const useAddressData = (address) => {
     },
     loading,
     error,
+    isContractAddress,
   };
 };

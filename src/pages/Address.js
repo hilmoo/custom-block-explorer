@@ -7,11 +7,13 @@ import AddressOverview from "../containers/Address/AddressOverview";
 import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
+import AddressContractSection from "../containers/Address/AddressContractSection";
 import { useAddressTransactionDataV2, useAddressData } from "../hooks";
+import ContractInfo from "../containers/Address/ContractInfo";
 
 const AddressPage = () => {
   const { address } = useParams();
-  const { summary } = useAddressData(address);
+  const { summary, isContractAddress } = useAddressData(address);
   const {
     transactions,
     latestTransaction,
@@ -20,6 +22,8 @@ const AddressPage = () => {
     tokenTransfers,
     nftTransfers,
   } = useAddressTransactionDataV2(address);
+
+  console.log({ isContractAddress });
 
   return (
     <div className="p-6">
@@ -45,20 +49,32 @@ const AddressPage = () => {
             ethBalance={summary.balance}
             usdBalance={summary.usdValue}
           />
-          <MoreInfo
-            totalTxs={totalTransactions || null}
-            latestTx={latestTransaction || null}
-            firstTx={firstTransaction || null}
-          />
+          {!isContractAddress ? (
+            <MoreInfo
+              totalTxs={totalTransactions || null}
+              latestTx={latestTransaction || null}
+              firstTx={firstTransaction || null}
+            />
+          ) : (
+            <ContractInfo />
+          )}
         </div>
 
         <div>
           {/* For Address */}
-          <AddressSection
-            transactions={transactions}
-            tokenTransfers={tokenTransfers}
-            nftTransfers={nftTransfers}
-          />
+          {!isContractAddress ? (
+            <AddressSection
+              transactions={transactions}
+              tokenTransfers={tokenTransfers}
+              nftTransfers={nftTransfers}
+            />
+          ) : (
+            <AddressContractSection
+              transactions={transactions}
+              tokenTransfers={tokenTransfers}
+              nftTransfers={nftTransfers}
+            />
+          )}
 
           {/* For Contracts */}
           {/* <AddressContractSection /> */}

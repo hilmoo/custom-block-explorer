@@ -18,7 +18,7 @@ const AddresssTransactionList = ({ transactions }) => {
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
         <span>
-          Total {transactions.length} calls with ETH transfer and contract
+          Total {transactions?.length} calls with ETH transfer and contract
           creation
         </span>
         <span>Hide zero-amount txns</span>

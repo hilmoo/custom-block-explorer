@@ -6,7 +6,7 @@ const AddressNFTTransfers = ({ transactions }) => {
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
-        <span>Total {transactions.length} transactions for NFT transfer </span>
+        <span>Total {transactions?.length} transactions for NFT transfer </span>
       </div>
 
       <Table

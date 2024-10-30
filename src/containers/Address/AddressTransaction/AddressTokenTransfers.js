@@ -8,7 +8,7 @@ const AddressTokenTransfers = ({ transactions }) => {
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
         <span>
-          Total {transactions.length} transactions for token transfer{" "}
+          Total {transactions?.length} transactions for token transfer{" "}
         </span>
       </div>
 
