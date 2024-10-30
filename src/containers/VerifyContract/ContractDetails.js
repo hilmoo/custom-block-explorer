@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Button from "../../components/UI/Button";
+import { getSolidityCompilerVersions } from "../../helpers/getSolidityCompilerVersions";
 
 const ContractDetails = ({ contractDetails, onContinueClick }) => {
   // @Todo: Fix this component
+  const [solidityVersions, setSolidityVersions] = useState([]);
+
   const [contractAddress, setContractAddress] = useState(
     contractDetails?.contractAddress || ""
   );
@@ -16,6 +19,14 @@ const ContractDetails = ({ contractDetails, onContinueClick }) => {
     contractDetails?.licenseType || "mit"
   );
 
+  useEffect(() => {
+    const fetchVersions = async () => {
+      const data = await getSolidityCompilerVersions();
+      setSolidityVersions(data?.releases);
+    };
+
+    fetchVersions();
+  }, []);
   const handleSubmit = (event) => {
     event.preventDefault();
     onContinueClick({
@@ -25,6 +36,17 @@ const ContractDetails = ({ contractDetails, onContinueClick }) => {
       licenseType,
     });
   };
+
+  const solcVersions = useMemo(() => {
+    if (!solidityVersions) return [];
+    let data = [];
+
+    Object.entries(solidityVersions).map(([k, v], idx) => {
+      data.push({ key: idx, label: v, value: k });
+    });
+
+    return data;
+  }, [solidityVersions]);
 
   return (
     <form
@@ -74,15 +96,22 @@ const ContractDetails = ({ contractDetails, onContinueClick }) => {
       >
         Please select Compiler Version
       </label>
-      <input
+      <select
         required
-        type="text"
-        id="compilerVersion"
+        id="compilerType"
         value={compilerVersion}
         onChange={(e) => setCompilerVersion(e.target.value)}
-        placeholder="0.8..."
         className="w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-gray-500"
-      />
+      >
+        <option value="">Please Select</option>
+        {solcVersions?.map(({ key, value, label }) => {
+          return (
+            <option key={key} value={value}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
 
       {/* License Type Dropdown */}
       <label className="block text-sm font-medium mb-1" htmlFor="licenseType">
