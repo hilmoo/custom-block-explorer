@@ -20,6 +20,7 @@ export const useAddressTransactionDataV2 = (address) => {
     totalBalanceReceived: ethers.BigNumber.from(0),
   });
   const [tokenTransfers, setTokenTransfers] = useState([]);
+  const [nftTransfers, setNftTransfers] = useState([]);
 
   // Track transaction hashes to avoid duplicates with a persistent reference
   const transactionHashes = useRef(new Set());
@@ -75,7 +76,7 @@ export const useAddressTransactionDataV2 = (address) => {
     }
   }, [address, firstActiveBlock]);
 
-  // Step 3: Fetch all transactions from the first active block onward, including token transfers
+  // Step 3: Fetch all transactions from the first active block onward, including token and NFT transfers
   const fetchTransactions = useCallback(async () => {
     if (firstActiveBlock === null) return;
     setLoading(true);
@@ -92,6 +93,7 @@ export const useAddressTransactionDataV2 = (address) => {
       const blocks = await Promise.all(blockPromises);
       const newTransactions = [];
       const tokenTransferDetails = [];
+      const nftTransferDetails = [];
       let totalSent = ethers.BigNumber.from(0);
       let totalReceived = ethers.BigNumber.from(0);
       let latestTx = null;
@@ -127,29 +129,53 @@ export const useAddressTransactionDataV2 = (address) => {
               firstTx = tx;
             }
 
-            // Fetch logs from the transaction receipt for token transfers
+            // Fetch logs from the transaction receipt for token and NFT transfers
             const receipt = await provider.getTransactionReceipt(txHash);
+
             receipt.logs.forEach((log) => {
               if (log.topics[0] === transferEventSignature) {
                 const from = `0x${log.topics[1].slice(26)}`;
                 const to = `0x${log.topics[2].slice(26)}`;
-                const value = ethers.BigNumber.from(log.data);
+                const tokenIdOrValue = ethers.BigNumber.from(
+                  log.data == "0x" ? 0 : log.data
+                );
 
-                // Check if the transaction involves the specified address
-                if (
-                  from.toLowerCase() === address.toLowerCase() ||
-                  to.toLowerCase() === address.toLowerCase()
-                ) {
-                  tokenTransferDetails.push({
-                    from,
-                    to,
-                    value: ethers.utils.formatEther(value),
-                    tokenAddress: log.address,
-                    transactionHash: tx.hash,
-                    hash: tx.hash,
-                    method: tx.data,
-                    tx: { ...tx },
-                  });
+                // Determine if it's a token or NFT transfer based on log topic length
+                if (log.topics.length === 3) {
+                  // Standard ERC-20 token transfer
+                  if (
+                    from.toLowerCase() === address.toLowerCase() ||
+                    to.toLowerCase() === address.toLowerCase()
+                  ) {
+                    tokenTransferDetails.push({
+                      from,
+                      to,
+                      value: ethers.utils.formatEther(tokenIdOrValue),
+                      tokenAddress: log.address,
+                      transactionHash: tx.hash,
+                      hash: tx.hash,
+                      data: tx.data,
+                      tx: { ...tx },
+                    });
+                  }
+                } else if (log.topics.length === 4) {
+                  // ERC-721 NFT transfer with tokenId
+                  const tokenId = ethers.BigNumber.from(log.topics[3]);
+                  if (
+                    from.toLowerCase() === address.toLowerCase() ||
+                    to.toLowerCase() === address.toLowerCase()
+                  ) {
+                    nftTransferDetails.push({
+                      from,
+                      to,
+                      value: ethers.utils.formatEther(tokenIdOrValue),
+                      tokenId: tokenId.toString(),
+                      tokenAddress: log.address,
+                      hash: tx.hash,
+                      data: tx.data,
+                      tx: { ...tx },
+                    });
+                  }
                 }
               }
             });
@@ -165,6 +191,7 @@ export const useAddressTransactionDataV2 = (address) => {
         totalBalanceReceived: totalReceived,
       });
       setTokenTransfers((prev) => [...prev, ...tokenTransferDetails]);
+      setNftTransfers((prev) => [...prev, ...nftTransferDetails]);
     } catch (error) {
       setError("Failed to fetch transactions");
       console.error(error);
@@ -193,9 +220,6 @@ export const useAddressTransactionDataV2 = (address) => {
       fetchTransactions();
     }
   }, [fetchTransactions, firstActiveBlock]);
-
-  console.log({ tokenTransfers });
-
   return {
     transactions,
     loading,
@@ -208,5 +232,6 @@ export const useAddressTransactionDataV2 = (address) => {
       summary.totalBalanceReceived
     ),
     tokenTransfers,
+    nftTransfers,
   };
 };

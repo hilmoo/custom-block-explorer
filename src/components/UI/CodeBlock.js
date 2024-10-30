@@ -10,7 +10,7 @@ const CodeBlock = ({ label, content }) => {
           </span>
         </div>
       )}
-      <div className="bg-[#f9f9f9] border border-[#ebebeb] rounded-md text-[#3d3d3d] px-4 whitespace-break-spaces h-[200px] overflow-y-scroll">
+      <div className="bg-[#f9f9f9] border border-[#ebebeb] rounded-md text-[#3d3d3d] px-4 whitespace-break-spaces max-h-[200px] overflow-y-scroll">
         <div className="text-wrap break-words">{content}</div>
       </div>
     </div>

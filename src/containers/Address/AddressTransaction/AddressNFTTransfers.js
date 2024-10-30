@@ -2,14 +2,11 @@ import React, { useMemo } from "react";
 import { Table } from "antd";
 import { getTokenTransferColumnConfig } from "../../../config";
 
-const AddressTokenTransfers = ({ transactions }) => {
-  console.log({ transactions });
+const AddressNFTTransfers = ({ transactions }) => {
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">
-        <span>
-          Total {transactions.length} transactions for token transfer{" "}
-        </span>
+        <span>Total {transactions.length} transactions for NFT transfer </span>
       </div>
 
       <Table
@@ -25,4 +22,4 @@ const AddressTokenTransfers = ({ transactions }) => {
   );
 };
 
-export default AddressTokenTransfers;
+export default AddressNFTTransfers;

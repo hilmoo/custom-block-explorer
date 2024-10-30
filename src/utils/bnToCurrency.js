@@ -18,7 +18,7 @@ export const bnToCurrency = (value, to = "gwei") => {
       "Invalid value type: must be a BigNumber, string, or number."
     );
   } catch (error) {
-    console.log({ error });
+    console.log({ error, value });
     return 0;
   }
 };

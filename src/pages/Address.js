@@ -7,8 +7,7 @@ import AddressOverview from "../containers/Address/AddressOverview";
 import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
-import useAddressData from "../hooks/useAddressData";
-import { useAddressTransactionDataV2 } from "../hooks";
+import { useAddressTransactionDataV2, useAddressData } from "../hooks";
 
 const AddressPage = () => {
   const { address } = useParams();
@@ -19,6 +18,7 @@ const AddressPage = () => {
     firstTransaction,
     totalTransactions,
     tokenTransfers,
+    nftTransfers,
   } = useAddressTransactionDataV2(address);
 
   return (
@@ -57,6 +57,7 @@ const AddressPage = () => {
           <AddressSection
             transactions={transactions}
             tokenTransfers={tokenTransfers}
+            nftTransfers={nftTransfers}
           />
 
           {/* For Contracts */}
