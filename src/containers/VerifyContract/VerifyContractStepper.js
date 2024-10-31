@@ -24,6 +24,7 @@ const STEPS = [
 const VerifyContractStepper = () => {
   const [step, setStep] = useState(1);
   const [contractDetails, setContractDetails] = useState({});
+  const [loading, setLoading] = useState(false);
   const { address } = useParams();
 
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const VerifyContractStepper = () => {
   const onBackClick = () => setStep(step - 1);
 
   const onSubmitClick = async (advancedData) => {
+    setLoading(true);
     setContractDetails((contractData) => ({
       ...contractData,
       ...advancedData,
@@ -61,6 +63,8 @@ const VerifyContractStepper = () => {
       navigate(`/address/${contractDetails.contractAddress}`);
     } catch (error) {
       console.error("Error generating ABI:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,12 +86,16 @@ const VerifyContractStepper = () => {
         )}
         {step === 2 && (
           <div>
-            <ContractVerificationAdvancedForm
-              step={step}
-              contractDetails={contractDetails}
-              onBackClick={onBackClick}
-              onSubmitClick={onSubmitClick}
-            />
+            {loading ? (
+              <p> Loading ... </p>
+            ) : (
+              <ContractVerificationAdvancedForm
+                step={step}
+                contractDetails={contractDetails}
+                onBackClick={onBackClick}
+                onSubmitClick={onSubmitClick}
+              />
+            )}
           </div>
         )}
       </div>

@@ -63,7 +63,7 @@ const AddressPage = () => {
           ) : (
             <ContractInfo
               address={address}
-              contractDetails={contractDetails?.tokenInfo}
+              tokenInfo={contractDetails?.tokenInfo}
               creator={contractCreationTx?.from}
               txHash={contractCreationTx?.hash}
             />
