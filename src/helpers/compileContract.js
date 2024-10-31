@@ -1,6 +1,7 @@
 import { solidityCompiler } from "@agnostico/browser-solidity-compiler";
 import { getSolidityCompilerVersions } from "./getSolidityCompilerVersions";
 
+// @Todo: Replace; Based on: rexdavinci/browser-solidity-compiler/blob/example/src/App.tsx
 export const compileContract = async ({
   sourceCode,
   compilerVersion,
