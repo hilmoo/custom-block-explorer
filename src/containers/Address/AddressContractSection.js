@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import TabButton from "../../components/UI/TabButton";
 import InternalTransaction from "../Transaction/InternalTransaction";
@@ -7,6 +7,8 @@ import AddressTransactionTab from "./AddressTransaction/AddressTransactionTab";
 import Divider from "../../components/UI/Divider";
 import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
 import AddressNFTTransfers from "./AddressTransaction/AddressNFTTransfers";
+import { loadABIFromIndexedDB } from "../../services/dbService";
+import { useParams } from "react-router-dom";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
@@ -27,6 +29,16 @@ const AddressContractSection = ({
   contractTxHash,
 }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
+  const [isVerified, setIsVerified] = useState(false);
+  const { address } = useParams();
+
+  useEffect(() => {
+    const checkIfVerified = async () => {
+      const abi = await loadABIFromIndexedDB(address);
+      setIsVerified(!!abi);
+    };
+    checkIfVerified();
+  }, []);
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);
@@ -42,14 +54,18 @@ const AddressContractSection = ({
     } else if (activeTab === "internalTxs") {
       return <InternalTransaction />;
     } else if (activeTab === "contracts") {
-      return (
-        <AddressContractTab
-          creationCode={creationCode}
-          deploymentCode={deploymentCode}
-          contractTxHash={contractTxHash}
-          contractCreator={contractCreator}
-        />
-      );
+      if (isVerified) {
+        return <p> Contract is Verified </p>;
+      } else {
+        return (
+          <AddressContractTab
+            creationCode={creationCode}
+            deploymentCode={deploymentCode}
+            contractTxHash={contractTxHash}
+            contractCreator={contractCreator}
+          />
+        );
+      }
     }
   }, [
     activeTab,
@@ -60,6 +76,7 @@ const AddressContractSection = ({
     contractTxHash,
     creationCode,
     deploymentCode,
+    isVerified,
   ]);
 
   return (
