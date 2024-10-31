@@ -4,6 +4,7 @@ import TabButton from "../../../components/UI/TabButton";
 import Divider from "../../../components/UI/Divider";
 import AddressContractVerifiedReadFunction from "../AddressContractVerifiedTab/AddressContractVerifiedReadFunction";
 import AddressContractVerifiedWriteFunction from "../AddressContractVerifiedTab/AddressContractVerifiedWriteFunction";
+import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 
 const TABS = [
   { id: 1, label: "Code", value: "code" },
@@ -13,8 +14,6 @@ const TABS = [
 
 const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
-
-  console.log({ activeTab });
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);
@@ -47,7 +46,13 @@ const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
       </div>
       {/* <Divider /> */}
 
-      <div className="mx-3 my-3">{getActiveTabContent()}</div>
+      <div className="flex flex-col">
+        <div className="flex text-center items-center mx-3 my-5 text-black font-semibold">
+          <CheckBadgeIcon className="w-4 h-4 mr-2 bg-green" />
+          <span>Contract source code verified</span>
+        </div>
+        <div className="mx-3 my-3">{getActiveTabContent()}</div>
+      </div>
     </div>
   );
 };
