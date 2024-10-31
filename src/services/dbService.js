@@ -72,12 +72,10 @@ const saveABIToIndexedDB = async (contractAddress, abi) => {
 
 // Load ABI from IndexedDB using the contract address
 const loadABIFromIndexedDB = async (contractAddress) => {
-  console.log({ contractAddress });
   const db = await openDatabase();
   const transaction = db.transaction(ABIS, "readonly");
   const store = transaction.objectStore(ABIS);
   const request = store.get(contractAddress);
-  console.log({ request });
 
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result?.abi || null);

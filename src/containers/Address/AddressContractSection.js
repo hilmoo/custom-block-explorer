@@ -9,6 +9,7 @@ import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
 import AddressNFTTransfers from "./AddressTransaction/AddressNFTTransfers";
 import { loadABIFromIndexedDB } from "../../services/dbService";
 import { useParams } from "react-router-dom";
+import AddressContractVerified from "./AddressContract/AddressContractVerified";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
@@ -55,7 +56,7 @@ const AddressContractSection = ({
       return <InternalTransaction />;
     } else if (activeTab === "contracts") {
       if (isVerified) {
-        return <p> Contract is Verified </p>;
+        return <AddressContractVerified creationCode={creationCode} />;
       } else {
         return (
           <AddressContractTab

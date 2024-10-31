@@ -74,8 +74,6 @@ const Transactions = () => {
 
   const { transactions } = useLatestTransactions(pageNumber);
 
-  console.log({ transactions });
-
   useEffect(() => {
     const fetchTotalTx = async () => {
       const txCount = await getTotalTxFromDB();

@@ -29,8 +29,6 @@ export const compileContract = async ({
     throw new Error(`Compiler version ${compilerVersion} is not available`);
   }
 
-  console.log({ releases, compilerVersion });
-
   // Step 2: Extract contract names from the source code
   const contractNames = [];
   let match;
@@ -41,8 +39,6 @@ export const compileContract = async ({
     contractNames.push(match[1]);
   }
 
-  console.log("Extracted contract names:", contractNames);
-
   // Step 3: Load the compiler and compile the contract
   try {
     const compiledOutput = await solidityCompiler({
@@ -51,7 +47,6 @@ export const compileContract = async ({
       options,
     });
 
-    console.log({ compiledOutput });
     // Step 4: Handle and log compilation errors if any
     if (compiledOutput.errors) {
       compiledOutput.errors.forEach((error) => {
@@ -73,7 +68,6 @@ export const compileContract = async ({
       }
     });
 
-    console.log("Compiled ABIs:", contractABIs);
     return contractABIs;
   } catch (error) {
     console.error("Compilation error:", error);

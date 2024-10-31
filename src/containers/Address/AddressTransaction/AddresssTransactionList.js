@@ -13,7 +13,6 @@ const COLUMNS = [
 ];
 
 const AddresssTransactionList = ({ transactions }) => {
-  console.log({ transactions });
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">

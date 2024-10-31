@@ -64,7 +64,6 @@ const VerifyContractStepper = () => {
     }
   };
 
-  console.log({ contractDetails });
   return (
     <div>
       <div className="mt-5">
