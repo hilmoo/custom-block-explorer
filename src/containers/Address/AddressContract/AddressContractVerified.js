@@ -1,36 +1,51 @@
-import React from "react";
-import { CheckBadgeIcon } from "@heroicons/react/24/outline";
-import CodeBlock from "../../../components/UI/CodeBlock";
+import React, { useCallback, useState } from "react";
+import AddressContractVerifiedCode from "../AddressContractVerifiedTab/AddressContractVerifiedCode";
+import TabButton from "../../../components/UI/TabButton";
+import Divider from "../../../components/UI/Divider";
+
+const TABS = [
+  { id: 1, label: "Code", value: "code" },
+  { id: 2, label: "Read Functions", value: "readFunctions" },
+  { id: 3, label: "Write Functions ", value: "writeFunctions" },
+];
 
 const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
-  return (
-    <div className="flex flex-col">
-      <div className="flex text-center items-center my-2 text-black font-semibold">
-        <CheckBadgeIcon className="w-4 h-4 mr-2 bg-green" />
-        <span>Contract source code verified</span>
-      </div>
-      <div className="mt-6">
-        <CodeBlock
-          label="Contract creation bytecode"
-          content={creationCode}
-          showCopy
-        />
-      </div>
+  const [activeTab, setActiveTab] = useState(TABS[0].value);
 
-      <div className="mt-6">
-        <CodeBlock
-          label="Contract ABI"
-          content={JSON.stringify(abi)}
-          showCopy
+  const onTabButtonClick = (id) => {
+    setActiveTab(id);
+  };
+
+  const getActiveTabContent = useCallback(() => {
+    if (activeTab === "code") {
+      return (
+        <AddressContractVerifiedCode
+          creationCode={creationCode}
+          abi={abi}
+          deploymentCode={deploymentCode}
+        />
+      );
+    }
+
+    // else if (activeTab === "readFunctions") {
+    //   return <AddressTokenTransfers transactions={tokenTransfers} />;
+    // } else if (activeTab === "writeFunctions") {
+    //   return <AddressNFTTransfers transactions={nftTransfers} />;
+    // }
+  }, [creationCode, abi, deploymentCode]);
+
+  return (
+    <div>
+      <div className="flex mt-3">
+        <TabButton
+          defaultActiveKey={activeTab}
+          items={TABS}
+          onTabButtonClick={onTabButtonClick}
         />
       </div>
-      <div className="mt-6">
-        <CodeBlock
-          label="Deployed Bytecode"
-          content={deploymentCode}
-          showCopy
-        />
-      </div>
+      {/* <Divider /> */}
+
+      <div className="mx-3 my-3">{getActiveTabContent()}</div>
     </div>
   );
 };
