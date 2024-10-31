@@ -51,7 +51,16 @@ const AddressContractSection = ({
         />
       );
     }
-  }, [activeTab, transactions, tokenTransfers, nftTransfers]);
+  }, [
+    activeTab,
+    transactions,
+    tokenTransfers,
+    nftTransfers,
+    contractCreator,
+    contractTxHash,
+    creationCode,
+    deploymentCode,
+  ]);
 
   return (
     <div>
