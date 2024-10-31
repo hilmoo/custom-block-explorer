@@ -2,6 +2,8 @@ import React, { useCallback, useState } from "react";
 import AddressContractVerifiedCode from "../AddressContractVerifiedTab/AddressContractVerifiedCode";
 import TabButton from "../../../components/UI/TabButton";
 import Divider from "../../../components/UI/Divider";
+import AddressContractVerifiedReadFunction from "../AddressContractVerifiedTab/AddressContractVerifiedReadFunction";
+import AddressContractVerifiedWriteFunction from "../AddressContractVerifiedTab/AddressContractVerifiedWriteFunction";
 
 const TABS = [
   { id: 1, label: "Code", value: "code" },
@@ -11,6 +13,8 @@ const TABS = [
 
 const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
+
+  console.log({ activeTab });
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);
@@ -25,14 +29,12 @@ const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
           deploymentCode={deploymentCode}
         />
       );
+    } else if (activeTab === "readFunctions") {
+      return <AddressContractVerifiedReadFunction />;
+    } else if (activeTab === "writeFunctions") {
+      return <AddressContractVerifiedWriteFunction />;
     }
-
-    // else if (activeTab === "readFunctions") {
-    //   return <AddressTokenTransfers transactions={tokenTransfers} />;
-    // } else if (activeTab === "writeFunctions") {
-    //   return <AddressNFTTransfers transactions={nftTransfers} />;
-    // }
-  }, [creationCode, abi, deploymentCode]);
+  }, [activeTab, creationCode, abi, deploymentCode]);
 
   return (
     <div>
