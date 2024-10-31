@@ -2,10 +2,13 @@ import {
   ClipboardDocumentIcon,
   DocumentIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 // @Todo: Replace with custom tailwind
 import { Collapse } from "antd";
+import { getReadFunctions } from "../../../utils/getReadAndWriteFunctions";
+import useReadContractFunctions from "../../../hooks/useReadContractFunctions";
+import useContractFunctions from "../../../hooks/useContractFunctions";
 
 const ITEMS = [
   {
@@ -36,8 +39,10 @@ const ITEMS = [
   },
 ];
 
-const AddressContractVerifiedReadFunction = () => {
+const AddressContractVerifiedReadFunction = ({ address, abi }) => {
   const [activeKey, setActiveKey] = useState(null);
+  const { readFunctions } = useContractFunctions(address, abi);
+
   const getDetails = (idx, key) => {
     return `${key}-${idx} THESE ARE DETAILS`;
   };
@@ -46,6 +51,7 @@ const AddressContractVerifiedReadFunction = () => {
     setActiveKey(key);
   };
 
+  console.log({ readFunctions });
   return (
     <div class="flex flex-col">
       <div className="flex align-center">

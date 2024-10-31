@@ -5,6 +5,7 @@ import Divider from "../../../components/UI/Divider";
 import AddressContractVerifiedReadFunction from "../AddressContractVerifiedTab/AddressContractVerifiedReadFunction";
 import AddressContractVerifiedWriteFunction from "../AddressContractVerifiedTab/AddressContractVerifiedWriteFunction";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { useParams } from "react-router-dom";
 
 const TABS = [
   { id: 1, label: "Code", value: "code" },
@@ -14,6 +15,7 @@ const TABS = [
 
 const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
+  const { address } = useParams();
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);
@@ -29,11 +31,15 @@ const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
         />
       );
     } else if (activeTab === "readFunctions") {
-      return <AddressContractVerifiedReadFunction />;
+      return (
+        <AddressContractVerifiedReadFunction address={address} abi={abi} />
+      );
     } else if (activeTab === "writeFunctions") {
-      return <AddressContractVerifiedWriteFunction />;
+      return (
+        <AddressContractVerifiedWriteFunction address={address} abi={abi} />
+      );
     }
-  }, [activeTab, creationCode, abi, deploymentCode]);
+  }, [activeTab, creationCode, abi, deploymentCode, address]);
 
   return (
     <div>
