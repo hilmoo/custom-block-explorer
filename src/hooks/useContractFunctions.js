@@ -9,14 +9,12 @@ const useContractFunctions = (address, abi) => {
   const [results, setResults] = useState({});
   const [txStatus, setTxStatus] = useState({});
 
-  console.log({ abi });
   useEffect(() => {
     if (address && abi) {
       const provider = getProvider();
       const signer = provider.getSigner();
       const { mainABI, unifiedABI } = flattenAndDeduplicateABI(abi);
 
-      //   console.log({ mainABI, unifiedABI });
       const contractInstance = getContract(address, mainABI, signer);
       setContract(contractInstance);
 
@@ -57,7 +55,7 @@ const useContractFunctions = (address, abi) => {
     [contract]
   );
 
-  // Function to call a write function
+  // Function to call a write function with transaction hash
   const callWriteFunction = useCallback(
     async (functionName, ...params) => {
       if (!contract) return;
@@ -66,18 +64,21 @@ const useContractFunctions = (address, abi) => {
         const tx = await contract[functionName](...params);
         setTxStatus((prevStatus) => ({
           ...prevStatus,
-          [functionName]: "pending",
+          [functionName]: { status: "pending", transactionHash: tx?.hash },
         }));
-        await tx.wait();
+
+        await tx?.wait();
+
         setTxStatus((prevStatus) => ({
           ...prevStatus,
-          [functionName]: "success",
+          [functionName]: { status: "success", transactionHash: tx?.hash },
         }));
+
         return tx;
       } catch (error) {
         setTxStatus((prevStatus) => ({
           ...prevStatus,
-          [functionName]: "failed",
+          [functionName]: { status: "failed", transactionHash: null },
         }));
         console.error(`Error calling write function ${functionName}:`, error);
       }
