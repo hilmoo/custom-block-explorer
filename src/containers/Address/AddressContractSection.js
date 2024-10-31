@@ -36,12 +36,14 @@ const AddressContractSection = ({
 }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
   const [isVerified, setIsVerified] = useState(false);
+  const [abi, setAbi] = useState(null);
   const { address } = useParams();
 
   useEffect(() => {
     const checkIfVerified = async () => {
       const abi = await loadABIFromIndexedDB(address);
       setIsVerified(!!abi);
+      setAbi(abi);
     };
     checkIfVerified();
   }, []);
@@ -61,7 +63,13 @@ const AddressContractSection = ({
       return <InternalTransaction />;
     } else if (activeTab === "contracts") {
       if (isVerified) {
-        return <AddressContractVerified creationCode={creationCode} />;
+        return (
+          <AddressContractVerified
+            creationCode={creationCode}
+            abi={abi}
+            deploymentCode={deploymentCode}
+          />
+        );
       } else {
         return (
           <AddressContractTab
@@ -83,6 +91,7 @@ const AddressContractSection = ({
     creationCode,
     deploymentCode,
     isVerified,
+    abi,
   ]);
 
   const tabs = useMemo(() => {
