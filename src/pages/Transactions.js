@@ -123,7 +123,6 @@ const Transactions = () => {
     fetchMethodNames();
   }, [transactions]);
 
-  console.log({ txs });
   return (
     <div className="p-6">
       <h1 className="ml-2 font-varela font-bold text-xl mx-auto">

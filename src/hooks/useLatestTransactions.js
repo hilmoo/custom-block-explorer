@@ -43,13 +43,17 @@ export const useLatestTransactions = (
             transactionsToSkip + transactionCount
           ) {
             txs.push(
-              ...block.transactions.slice(
-                0,
-                transactionsToSkip + transactionCount - txs.length
-              )
+              ...block.transactions
+                .map((tx) => ({ ...tx, timeStamp: block.timestamp }))
+                .slice(0, transactionsToSkip + transactionCount - txs.length)
             );
           } else {
-            txs.push(...block.transactions);
+            txs.push(
+              ...block.transactions.map((tx) => ({
+                ...tx,
+                timeStamp: block.timestamp,
+              }))
+            );
           }
         });
 
