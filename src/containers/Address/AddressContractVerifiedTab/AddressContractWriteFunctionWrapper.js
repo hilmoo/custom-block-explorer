@@ -87,6 +87,7 @@ const AddressContractWriteFunctionWrapper = ({ address, abi }) => {
 
   const navigateToAddress = () => navigate(`/address/${walletAddress}`);
 
+  //   @Todo: Create wallet selection for hardhat
   return (
     <div className="flex flex-col">
       <div>

@@ -34,8 +34,6 @@ const AddressContractVerifiedWriteFunction = ({ address, abi }) => {
       const functionName = writeFunctions[key].name;
       const inputs = Object.values(inputValues[key] || {});
 
-      console.log({ inputs });
-
       try {
         setTxStatus((prevStatus) => ({
           ...prevStatus,
