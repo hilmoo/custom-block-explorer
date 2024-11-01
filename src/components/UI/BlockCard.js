@@ -29,7 +29,7 @@ const ListCard = ({
       className={`p-2 rounded-lg relative my-2 ${isLoading && "animate-pulse"}`}
     >
       <div className="absolute justify-center text-lg items-center top-[25%] left-[3%] hidden md:block">
-        {!isTransaction ? "Bk" : "Tk"}
+        {!isTransaction ? "Bk" : "Tx"}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-8 gap-2 md:ml-12">
         <div className="col-span-2">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getProvider } from "../helpers";
+import { getSocketProvider } from "../helpers"; // Update helper to use WS provider
 
 export const useLatestTransactions = (
   pageNumber = 1,
@@ -10,9 +10,9 @@ export const useLatestTransactions = (
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const provider = getProvider();
+    const provider = getSocketProvider();
 
-    const fetchLatestTransactions = async () => {
+    const fetchInitialTransactions = async () => {
       try {
         setLoading(true);
         const latestBlockNumber = await provider.getBlockNumber();
@@ -66,7 +66,36 @@ export const useLatestTransactions = (
       }
     };
 
-    fetchLatestTransactions();
+    // Fetch initial transactions once
+    fetchInitialTransactions();
+
+    // Listen for new blocks using WebSocket
+    provider.on("block", async (newBlockNumber) => {
+      try {
+        const newBlock = await provider.getBlockWithTransactions(
+          newBlockNumber
+        );
+
+        // Update transactions with the new block's transactions
+        setTransactions((prevTransactions) => {
+          const updatedTransactions = [
+            ...newBlock.transactions,
+            ...prevTransactions,
+          ];
+          return updatedTransactions.slice(
+            0,
+            Math.min(50, updatedTransactions.length)
+          );
+        });
+      } catch (err) {
+        console.error("Error fetching new block transactions:", err);
+      }
+    });
+
+    // Cleanup WebSocket listener on unmount
+    return () => {
+      provider.removeAllListeners("block");
+    };
   }, [pageNumber, transactionCount]);
 
   return { transactions, loading, error };
