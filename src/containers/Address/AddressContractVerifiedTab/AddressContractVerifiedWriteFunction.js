@@ -34,8 +34,6 @@ const AddressContractVerifiedWriteFunction = ({ address, abi }) => {
       const functionName = writeFunctions[key].name;
       const inputs = Object.values(inputValues[key] || {});
 
-      console.log({ inputs });
-
       try {
         setTxStatus((prevStatus) => ({
           ...prevStatus,
@@ -95,14 +93,14 @@ const AddressContractVerifiedWriteFunction = ({ address, abi }) => {
                 <input
                   key={i}
                   placeholder={input.name || `Input ${i + 1} (${input.type})`}
-                  className="border p-1 rounded-md"
+                  className="border border-gray-200 focus:border-gray-500 p-1 rounded-md"
                   onChange={(e) => handleInputChange(idx, i, e.target.value)}
                 />
               ))}
               <div className="w-[100px]">
                 <button
                   onClick={(event) => handleWriteFunction(event, idx)}
-                  className="mt-2 px-4 py-2 bg-black text-white rounded-md"
+                  className="my-2 px-4 py-0.5 bg-black text-white rounded-md"
                 >
                   Execute
                 </button>
@@ -111,7 +109,7 @@ const AddressContractVerifiedWriteFunction = ({ address, abi }) => {
           )}
 
           <p>
-            Status: {txStatus[idx]?.status}
+            {txStatus[idx]?.status && `Status: ${txStatus[idx]?.status}`}
             {txStatus[idx]?.transactionHash && (
               <span>
                 {" "}
@@ -130,14 +128,14 @@ const AddressContractVerifiedWriteFunction = ({ address, abi }) => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center mb-4">
+      <div className="flex items-center my-2">
         <DocumentIcon className="w-4 h-4 mr-2" />
         Supports writing to the following contract function information
       </div>
 
       <div className="grid grid-cols-1 gap-4 mt-4">
         {tabContent.map((item) => (
-          <div key={item.key} className="border rounded-lg shadow-md">
+          <div key={item.key} className="rounded-md shadow-md">
             <Collapse
               accordion
               expandIconPosition="end"

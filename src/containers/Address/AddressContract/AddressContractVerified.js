@@ -6,6 +6,7 @@ import AddressContractVerifiedReadFunction from "../AddressContractVerifiedTab/A
 import AddressContractVerifiedWriteFunction from "../AddressContractVerifiedTab/AddressContractVerifiedWriteFunction";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
+import AddressContractWriteFunctionWrapper from "../AddressContractVerifiedTab/AddressContractWriteFunctionWrapper";
 
 const TABS = [
   { id: 1, label: "Code", value: "code" },
@@ -36,7 +37,7 @@ const AddressContractVerified = ({ creationCode, abi, deploymentCode }) => {
       );
     } else if (activeTab === "writeFunctions") {
       return (
-        <AddressContractVerifiedWriteFunction address={address} abi={abi} />
+        <AddressContractWriteFunctionWrapper address={address} abi={abi} />
       );
     }
   }, [activeTab, creationCode, abi, deploymentCode, address]);
