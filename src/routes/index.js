@@ -7,6 +7,7 @@ const Transactions = lazy(() => import("../pages/Transactions"));
 const Block = lazy(() => import("../pages/Block"));
 const Transaction = lazy(() => import("../pages/Transaction"));
 const VerifyContract = lazy(() => import("../pages/VerifyContract"));
+const Tokens = lazy(() => import("../pages/Tokens"));
 
 const routes = [
   {
@@ -62,6 +63,14 @@ const routes = [
     component: (
       <Suspense fallback={<div>Loading VerifyContract...</div>}>
         <VerifyContract />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/tokens",
+    component: (
+      <Suspense fallback={<div>Loading VerifyContract...</div>}>
+        <Tokens />
       </Suspense>
     ),
   },
