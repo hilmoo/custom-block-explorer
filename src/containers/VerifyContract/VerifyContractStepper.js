@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContractDetails from "./ContractDetails";
-import Button from "../../components/UI/Button";
 import Stepper from "../../components/UI/Stepper";
 import ContractVerificationAdvancedForm from "./ContractVerificationAdvanceForm";
+import { compileContract } from "../../helpers/compileContract";
+import {
+  loadABIFromIndexedDB,
+  saveABIToIndexedDB,
+} from "../../services/dbService";
+import { useNavigate, useParams } from "react-router-dom";
+import { isContract } from "../../utils";
 
 const STEPS = [
   {
@@ -18,6 +24,19 @@ const STEPS = [
 const VerifyContractStepper = () => {
   const [step, setStep] = useState(1);
   const [contractDetails, setContractDetails] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { address } = useParams();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isVerified = async () => {
+      const abi = await loadABIFromIndexedDB(address);
+      const isContractAddress = await isContract(address);
+      if (!!abi || !isContractAddress) navigate(`/address/${address}`);
+    };
+    isVerified();
+  }, [address, navigate]);
 
   const onContinueClick = (contractData) => {
     setStep((s) => s + 1);
@@ -26,14 +45,29 @@ const VerifyContractStepper = () => {
 
   const onBackClick = () => setStep(step - 1);
 
-  const onSubmitClick = (advancedData) => {
+  const onSubmitClick = async (advancedData) => {
+    setLoading(true);
     setContractDetails((contractData) => ({
       ...contractData,
       ...advancedData,
     }));
+
+    try {
+      const abi = await compileContract({
+        sourceCode: advancedData.sourceCode,
+        compilerVersion: contractDetails.compilerVersion,
+        optimization: true,
+        runs: 200,
+      });
+      await saveABIToIndexedDB(contractDetails?.contractAddress, abi);
+      navigate(`/address/${contractDetails.contractAddress}`);
+    } catch (error) {
+      console.error("Error generating ABI:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  console.log({ contractDetails });
   return (
     <div>
       <div className="mt-5">
@@ -52,12 +86,16 @@ const VerifyContractStepper = () => {
         )}
         {step === 2 && (
           <div>
-            <ContractVerificationAdvancedForm
-              step={step}
-              contractDetails={contractDetails}
-              onBackClick={onBackClick}
-              onSubmitClick={onSubmitClick}
-            />
+            {loading ? (
+              <p> Loading ... </p>
+            ) : (
+              <ContractVerificationAdvancedForm
+                step={step}
+                contractDetails={contractDetails}
+                onBackClick={onBackClick}
+                onSubmitClick={onSubmitClick}
+              />
+            )}
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "../../components/UI/Button";
+import { getSolidityCompilerVersions } from "../../helpers/getSolidityCompilerVersions";
 
 const ContractVerificationAdvancedForm = ({
   contractDetails,
@@ -17,7 +18,7 @@ const ContractVerificationAdvancedForm = ({
     e.preventDefault();
 
     onSubmitClick({
-      sourceCode,
+      sourceCode: sourceCode.trim(),
       optimization,
       runs,
       evmVersion,
