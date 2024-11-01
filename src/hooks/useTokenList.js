@@ -74,19 +74,73 @@ export const useTokenList = (tokenType = "erc20") => {
                   tx: { ...tx },
                 });
               } else if (tokenType === "nft" && log.topics.length === 4) {
-                // NFT transfer (ERC-721)
-                const tokenId = ethers.BigNumber.from(log.topics[3]).toString();
-                filteredTokens.push({
-                  from,
-                  to,
-                  tokenId,
-                  tokenAddress: log.address,
-                  transactionHash: tx.hash,
-                  type: "NFT",
-                  hash: tx.hash,
-                  data: tx.data,
-                  tx: { ...tx },
-                });
+                const eventSignatureSingle = ethers.utils.id(
+                  "TransferSingle(address,address,address,uint256,uint256)"
+                );
+                const eventSignatureBatch = ethers.utils.id(
+                  "TransferBatch(address,address,address,uint256[],uint256[])"
+                );
+
+                if (log.topics[0] === eventSignatureSingle) {
+                  // ERC-1155 TransferSingle or ERC-721 Transfer
+                  const tokenId = ethers.BigNumber.from(
+                    log.topics[3]
+                  ).toString();
+                  const value = ethers.BigNumber.from(log.data).toString(); // Value in TransferSingle is in data
+
+                  filteredTokens.push({
+                    from,
+                    to,
+                    tokenId,
+                    value,
+                    tokenAddress: log.address,
+                    transactionHash: tx.hash,
+                    type: "ERC-1155 Single",
+                    hash: tx.hash,
+                    data: tx.data,
+                    tx: { ...tx },
+                  });
+                } else if (log.topics[0] === eventSignatureBatch) {
+                  // ERC-1155 TransferBatch
+                  // Decode the data field to get token IDs and values arrays
+                  const abiCoder = new ethers.utils.AbiCoder();
+                  const [tokenIds, values] = abiCoder.decode(
+                    ["uint256[]", "uint256[]"],
+                    log.data
+                  );
+
+                  // Add each tokenId and value to the filteredTokens array
+                  tokenIds.forEach((id, index) => {
+                    filteredTokens.push({
+                      from,
+                      to,
+                      tokenId: id.toString(),
+                      value: values[index].toString(),
+                      tokenAddress: log.address,
+                      transactionHash: tx.hash,
+                      type: "ERC-1155 Batch",
+                      hash: tx.hash,
+                      data: tx.data,
+                      tx: { ...tx },
+                    });
+                  });
+                } else {
+                  // ERC-721 Transfer (default to 4 topics but different event signature)
+                  const tokenId = ethers.BigNumber.from(
+                    log.topics[3]
+                  ).toString();
+                  filteredTokens.push({
+                    from,
+                    to,
+                    tokenId,
+                    tokenAddress: log.address,
+                    transactionHash: tx.hash,
+                    type: "ERC-721",
+                    hash: tx.hash,
+                    data: tx.data,
+                    tx: { ...tx },
+                  });
+                }
               }
             }
           });

@@ -8,6 +8,7 @@ const Block = lazy(() => import("../pages/Block"));
 const Transaction = lazy(() => import("../pages/Transaction"));
 const VerifyContract = lazy(() => import("../pages/VerifyContract"));
 const Tokens = lazy(() => import("../pages/Tokens"));
+const NFTTokens = lazy(() => import("../pages/NFTTokens"));
 
 const routes = [
   {
@@ -71,6 +72,14 @@ const routes = [
     component: (
       <Suspense fallback={<div>Loading VerifyContract...</div>}>
         <Tokens />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/nfts",
+    component: (
+      <Suspense fallback={<div>Loading VerifyContract...</div>}>
+        <NFTTokens />
       </Suspense>
     ),
   },
