@@ -6,7 +6,12 @@ import ListItem from "../../components/UI/ListItem";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import Divider from "../../components/UI/Divider";
-import { bnToCurrency, getCurrencyInEth } from "../../utils";
+import {
+  bnToCurrency,
+  getCurrencyInEth,
+  humanizeString,
+  truncateAddress,
+} from "../../utils";
 import CodeBlock from "../../components/UI/CodeBlock";
 
 dayjs.extend(LocalizedFormat);
@@ -73,6 +78,13 @@ const BlockTransaction = ({ transaction }) => {
       {
         label: "From ENS",
         value: "ENS NAME 🔥",
+        type: "string",
+      },
+      {
+        label: "Method",
+        value: !!transaction.methodName
+          ? humanizeString(transaction.methodName)
+          : truncateAddress(transaction.data),
         type: "string",
       },
       {

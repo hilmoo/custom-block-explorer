@@ -36,7 +36,7 @@ const SummaryCard = ({
           isLoading={isLoading}
           label="24 hr txs Volume"
           value={txn24hVolume}
-          unit="tnx"
+          unit="txns"
         />
         <StatsCard
           isLoading={isLoading}

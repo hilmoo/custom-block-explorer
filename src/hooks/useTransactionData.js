@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { getProvider, getTxsFees } from "../helpers";
+import { getMethodNameFromData, getProvider, getTxsFees } from "../helpers";
 
 const useTransactionData = (txHash, confirmations = 1) => {
   const [transaction, setTransaction] = useState({});
@@ -22,11 +22,17 @@ const useTransactionData = (txHash, confirmations = 1) => {
           gasPrice: txReceipt.effectiveGasPrice,
         });
 
+        const methodName = await getMethodNameFromData(
+          tx.data,
+          tx.to || tx.creates
+        );
+
         setTransaction({
           ...tx,
           ...txReceipt,
           rewardData,
           block,
+          methodName,
         });
       } else {
         setError("Transaction not found");

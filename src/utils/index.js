@@ -7,3 +7,4 @@ export * from "./getCurrencyInGwei";
 export * from "./isContract";
 export * from "./getReadAndWriteFunctions";
 export * from "./flattenAndDeduplicateABI";
+export * from "./humanizeString";

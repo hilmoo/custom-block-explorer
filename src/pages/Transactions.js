@@ -3,12 +3,18 @@ import { Table } from "antd";
 import { Link } from "react-router-dom";
 
 import { useLatestTransactions } from "../hooks";
-import { getTotalTxFromDB, getTxsFees } from "../helpers";
+import {
+  getMethodNameFromData,
+  getMethodNameFromDataWithoutABI,
+  getTotalTxFromDB,
+  getTxsFees,
+} from "../helpers";
 import {
   bnToCurrency,
   getCurrencyInEth,
   roundUpNumber,
   truncateAddress,
+  humanizeString,
 } from "../utils";
 
 const COLUMNS = [
@@ -24,10 +30,12 @@ const COLUMNS = [
   },
   {
     title: "Method",
-    dataIndex: "data",
-    key: "data",
-    render: (address) => (
-      <span className="font-bold">{truncateAddress(address)}</span>
+    dataIndex: "methodName",
+    key: "methodName",
+    render: (methodName, tx) => (
+      <span className={!!methodName && "font-bold"}>
+        {!!methodName ? humanizeString(methodName) : truncateAddress(tx.data)}
+      </span>
     ),
   },
   {
@@ -92,6 +100,30 @@ const Transactions = () => {
     setPageNumber(() => pagination.current);
   };
 
+  const [txs, setTxs] = useState([]);
+
+  useEffect(() => {
+    if (!transactions) {
+      setTxs([]);
+      return;
+    }
+
+    const fetchMethodNames = async () => {
+      let data = [];
+      for (const tx of transactions) {
+        const methodName = await getMethodNameFromData(
+          tx.data,
+          tx.to || tx.creates
+        );
+        data.push({ ...tx, methodName });
+      }
+      setTxs(data);
+    };
+
+    fetchMethodNames();
+  }, [transactions]);
+
+  console.log({ txs });
   return (
     <div className="p-6">
       <h1 className="ml-2 font-varela font-bold text-xl mx-auto">
@@ -103,7 +135,7 @@ const Transactions = () => {
           size="large"
           className="mt-4 overflow-x-scroll"
           columns={COLUMNS}
-          dataSource={transactions || []}
+          dataSource={txs || []}
           onChange={onTableChange}
           pagination={{
             position: "bottom-right",
