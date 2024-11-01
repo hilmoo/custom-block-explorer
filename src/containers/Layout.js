@@ -19,12 +19,11 @@ const NAVBAR = [
     key: "tx",
     label: "Blockchain",
     children: [
+      { key: "block-list", label: "Latest Blocks" },
       {
         key: "txs",
         label: "Transactions",
       },
-      { key: "latest-txs", label: "Latest Transactions" },
-      { key: "pending-txs", label: "Pending Txs" },
     ],
   },
   {
@@ -32,10 +31,10 @@ const NAVBAR = [
     label: "Token",
     children: [
       {
-        key: "token",
+        key: "tokens",
         label: "Token List",
       },
-      { key: "nft", label: "NFT list" },
+      { key: "nfts", label: "NFT list" },
     ],
   },
   {
