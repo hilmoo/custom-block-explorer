@@ -3,6 +3,7 @@ import Tooltip from "../../components/UI/Tooltip";
 import { truncateAddress } from "../../utils";
 import { useContractDetails } from "../../hooks";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const ContractInfo = ({ creator, txHash, tokenInfo }) => {
   return (
@@ -19,7 +20,13 @@ const ContractInfo = ({ creator, txHash, tokenInfo }) => {
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
             <div className="truncate">
-              {truncateAddress(creator)} created at {truncateAddress(txHash)}
+              <Link className="text-blue-500" to={`/address/${creator}`}>
+                {truncateAddress(creator)}{" "}
+              </Link>
+              created at{" "}
+              <Link className="text-blue-500" to={`/tx/${txHash}`}>
+                {truncateAddress(txHash)}{" "}
+              </Link>
             </div>
           </div>
         </div>

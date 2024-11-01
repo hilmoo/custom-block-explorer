@@ -62,6 +62,7 @@ const BlockTransaction = ({ block }) => {
         value: block.miner, // @Todo - Get ENS
         type: "string",
         showCopy: true,
+        link: true,
       },
       {
         id: "block_rewards",

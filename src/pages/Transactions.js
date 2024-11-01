@@ -17,7 +17,7 @@ const COLUMNS = [
     dataIndex: "hash",
     key: "hash",
     render: (hash) => (
-      <Link className="text-[#1677ff]" to={`/tx/${hash}`}>
+      <Link className="text-blue-500" to={`/tx/${hash}`}>
         {truncateAddress(hash, 10)}
       </Link>
     ),
@@ -35,17 +35,22 @@ const COLUMNS = [
     dataIndex: "from",
     key: "from",
     render: (address) => (
-      <span className="font-bold">{truncateAddress(address)}</span>
+      <Link to={`/address/${address}`} className="text-blue-500">
+        {truncateAddress(address)}
+      </Link>
     ),
   },
   {
     title: "To",
     dataIndex: "to",
     key: "to",
-    render: (address) => (
-      <span className="font-bold">
+    render: (address, data) => (
+      <Link
+        to={`/address/${!!address ? address : data.creates}`}
+        className="text-blue-500"
+      >
         {!!address ? truncateAddress(address) : "Create: Contract"}
-      </span>
+      </Link>
     ),
   },
   {

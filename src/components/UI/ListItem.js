@@ -4,8 +4,16 @@ import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import Tooltip from "./Tooltip";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import CodeBlock from "./CodeBlock";
+import { Link } from "react-router-dom";
 
-const ListItem = ({ label, value, info = "", showCopy = false, type = "" }) => {
+const ListItem = ({
+  label,
+  value,
+  info = "",
+  showCopy = false,
+  type = "",
+  link = "",
+}) => {
   const [hasCopied, setHasCopied] = useState(false);
   const onCopyClick = (event) => {
     setHasCopied(true);
@@ -33,6 +41,11 @@ const ListItem = ({ label, value, info = "", showCopy = false, type = "" }) => {
             <div className="break-all">
               <CodeBlock label="" content={value} />
             </div>
+          ) : !!link ? (
+            <Link to={link} className="text-blue-500">
+              {" "}
+              {value}
+            </Link>
           ) : (
             <div className="truncate">{value}</div>
           )}

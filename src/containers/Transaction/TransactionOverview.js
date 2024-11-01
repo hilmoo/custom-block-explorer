@@ -68,10 +68,11 @@ const BlockTransaction = ({ transaction }) => {
         value: `${transaction.from}`,
         type: "string",
         showCopy: true,
+        link: `/address/${transaction.from}`,
       },
       {
         label: "From ENS",
-        value: "titanbuilder.eth 🔥",
+        value: "ENS NAME 🔥",
         type: "string",
       },
       {
@@ -80,6 +81,9 @@ const BlockTransaction = ({ transaction }) => {
         type: "string",
         info: "The receiver of this transaction",
         showCopy: true,
+        link: `/address/${
+          !!transaction.to ? transaction.to : transaction.creates
+        }`,
       },
     ];
 

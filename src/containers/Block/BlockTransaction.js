@@ -24,13 +24,16 @@ const COLUMNS = [
     title: "Method",
     dataIndex: "data",
     key: "data",
+    render: (data) => <span>{truncateAddress(data)}</span>,
   },
   {
     title: "From",
     dataIndex: "from",
     key: "from",
     render: (address) => (
-      <span className="font-bold">{truncateAddress(address)}</span>
+      <Link to={`/address/${address}`} className="text-blue-500">
+        {truncateAddress(address)}
+      </Link>
     ),
   },
   {
@@ -38,7 +41,9 @@ const COLUMNS = [
     dataIndex: "to",
     key: "to",
     render: (address) => (
-      <span className="font-bold">{truncateAddress(address)}</span>
+      <Link to={`/address/${address}`} className="text-blue-500">
+        {truncateAddress(address)}
+      </Link>
     ),
   },
   {

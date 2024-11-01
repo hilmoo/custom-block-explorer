@@ -40,7 +40,7 @@ const AddressPage = () => {
             <DocumentDuplicateIcon className="w-3 h-3" />
           </div>
 
-          <span className="text-gray">ENS: titanbuilder.eth </span>
+          <span className="text-gray">ENS: ENS NAME 🔥 </span>
         </div>
 
         <Divider />
