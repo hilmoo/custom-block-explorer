@@ -68,7 +68,7 @@ const AddressContractVerifiedReadFunction = ({ address, abi }) => {
                 <input
                   key={i}
                   placeholder={input.name || `Input ${i + 1}`}
-                  className="p-1 border border-gray-100 rounded-md"
+                  className="p-1 border border-gray-200 focus:border-gray-500 rounded-md"
                   onChange={(e) => handleInputChange(idx, i, e.target.value)}
                 />
               ))}
@@ -115,7 +115,7 @@ const AddressContractVerifiedReadFunction = ({ address, abi }) => {
 
       <div className="grid grid-cols-1 gap-4">
         {tabContent.map((item) => (
-          <div key={item.key} className="border rounded-lg shadow-md">
+          <div key={item.key} className="rounded-md shadow-md">
             <Collapse
               accordion
               expandIconPosition="end"
