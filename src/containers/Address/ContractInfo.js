@@ -1,7 +1,10 @@
 import React from "react";
 import Tooltip from "../../components/UI/Tooltip";
+import { truncateAddress } from "../../utils";
+import { useContractDetails } from "../../hooks";
+import { BanknotesIcon } from "@heroicons/react/24/outline";
 
-const ContractInfo = ({}) => {
+const ContractInfo = ({ creator, txHash, tokenInfo }) => {
   return (
     <div>
       <h1 className="mt-5 font-varela font-bold text-lg mx-auto">
@@ -16,7 +19,7 @@ const ContractInfo = ({}) => {
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
             <div className="truncate">
-              0x785f...43cfc6e6801 created at 0xaac281dbf3fbbb
+              {truncateAddress(creator)} created at {truncateAddress(txHash)}
             </div>
           </div>
         </div>
@@ -26,7 +29,11 @@ const ContractInfo = ({}) => {
         <span className="cursor-pointer text-gray-500">Token Tracker</span>
         <div className="col-span-5 sm:col-span-4">
           <div className="flex items-center space-x-2">
-            <div className="truncate"> ETH</div>
+            <div className="flex truncate items-center">
+              <BanknotesIcon className="w-4 h-4" />
+              &nbsp;
+              {`${tokenInfo?.symbol} (${tokenInfo?.name})`}
+            </div>
           </div>
         </div>
       </div>

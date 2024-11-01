@@ -5,3 +5,5 @@ export * from "./getDifficulty";
 export * from "./getCurrencyInEth";
 export * from "./getCurrencyInGwei";
 export * from "./isContract";
+export * from "./getReadAndWriteFunctions";
+export * from "./flattenAndDeduplicateABI";

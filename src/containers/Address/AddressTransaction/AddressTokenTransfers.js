@@ -3,7 +3,6 @@ import { Table } from "antd";
 import { getTokenTransferColumnConfig } from "../../../config";
 
 const AddressTokenTransfers = ({ transactions }) => {
-  console.log({ transactions });
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">

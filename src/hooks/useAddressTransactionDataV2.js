@@ -7,7 +7,7 @@ const transferEventSignature = ethers.utils.id(
   "Transfer(address,address,uint256)"
 );
 
-export const useAddressTransactionDataV2 = (address) => {
+export const useAddressTransactionDataV2 = (address, checkContract = false) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,6 +21,7 @@ export const useAddressTransactionDataV2 = (address) => {
   });
   const [tokenTransfers, setTokenTransfers] = useState([]);
   const [nftTransfers, setNftTransfers] = useState([]);
+  const [contractDetails, setContractDetails] = useState({});
 
   // Track transaction hashes to avoid duplicates with a persistent reference
   const transactionHashes = useRef(new Set());
@@ -102,6 +103,8 @@ export const useAddressTransactionDataV2 = (address) => {
       for (const block of blocks) {
         for (const tx of block.transactions) {
           const txHash = tx.hash.toLowerCase();
+
+          if (!!checkContract && tx.to === null) setContractDetails(tx); // This is contract creation tx
           if (
             (tx.from.toLowerCase() === address.toLowerCase() ||
               (tx.to && tx.to.toLowerCase() === address.toLowerCase())) &&
@@ -205,21 +208,21 @@ export const useAddressTransactionDataV2 = (address) => {
     if (firstActiveBlock === null) {
       findFirstActiveBlock();
     }
-  }, [findFirstActiveBlock, firstActiveBlock]);
+  }, [findFirstActiveBlock, firstActiveBlock, checkContract]);
 
   // Calculate total transactions after finding the first active block
   useEffect(() => {
     if (firstActiveBlock !== null) {
       calculateTotalTransactions();
     }
-  }, [calculateTotalTransactions, firstActiveBlock]);
+  }, [calculateTotalTransactions, firstActiveBlock, checkContract]);
 
   // Fetch transactions after determining the first active block
   useEffect(() => {
     if (firstActiveBlock !== null) {
       fetchTransactions();
     }
-  }, [fetchTransactions, firstActiveBlock]);
+  }, [fetchTransactions, firstActiveBlock, checkContract]);
   return {
     transactions,
     loading,
@@ -233,5 +236,6 @@ export const useAddressTransactionDataV2 = (address) => {
     ),
     tokenTransfers,
     nftTransfers,
+    contractDetails,
   };
 };

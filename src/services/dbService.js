@@ -2,18 +2,22 @@ const DB_NAME = "BlockExplorerDB";
 const DB_VERSION = 1;
 
 const METRICS = "metrics";
+const ABIS = "abis";
 
 const openDatabase = () => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject("Failed to open IndexedDB");
-
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       db.createObjectStore(METRICS, { keyPath: "id" });
+      if (!db.objectStoreNames.contains(ABIS)) {
+        db.createObjectStore(ABIS, { keyPath: "address" });
+      }
     };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject("Failed to open IndexedDB");
   });
 };
 
@@ -53,6 +57,36 @@ const clearIndexedDB = async () => {
   });
 };
 
-// Usage
+// Save ABI to IndexedDB under the contract address key
+const saveABIToIndexedDB = async (contractAddress, abi) => {
+  const db = await openDatabase();
+  const transaction = db.transaction(ABIS, "readwrite");
+  const store = transaction.objectStore(ABIS);
+  store.put({ address: contractAddress, abi });
 
-export { loadFromIndexedDB, saveToIndexedDB, clearIndexedDB };
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject("Failed to save ABI to IndexedDB");
+  });
+};
+
+// Load ABI from IndexedDB using the contract address
+const loadABIFromIndexedDB = async (contractAddress) => {
+  const db = await openDatabase();
+  const transaction = db.transaction(ABIS, "readonly");
+  const store = transaction.objectStore(ABIS);
+  const request = store.get(contractAddress);
+
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result?.abi || null);
+    request.onerror = () => reject("Failed to load ABI from IndexedDB");
+  });
+};
+
+export {
+  loadFromIndexedDB,
+  saveToIndexedDB,
+  clearIndexedDB,
+  saveABIToIndexedDB,
+  loadABIFromIndexedDB,
+};

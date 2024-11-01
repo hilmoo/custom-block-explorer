@@ -11,3 +11,6 @@ export * from "./useAddressBalanceData";
 export * from "./useAddressTransactionData";
 export * from "./useAddressData";
 export * from "./useAddressTransactionDataV2";
+export * from "./useContractDetails";
+export * from "./useReadContractFunctions";
+export * from "./useContractFunctions";

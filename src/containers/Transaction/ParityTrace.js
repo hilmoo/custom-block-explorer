@@ -53,7 +53,6 @@ const OVERVIEW = [
 const ParityTrace = ({ transaction }) => {
   const { trace } = useParityTraceTransaction(transaction.hash);
 
-  console.log({ trace });
   return (
     <div className="p-6">
       <div className="flex text-gray-500 text-sm justify-between">

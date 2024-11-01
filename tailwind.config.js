@@ -28,6 +28,7 @@ module.exports = {
       "blue-900": "#0038ba",
       "badge-success": "#a7f3d033",
       "badge-failed": "#FEE2E2",
+      green: "#a7f3d033",
     },
     extend: {
       colorPrimary: "#000000",

@@ -8,7 +8,11 @@ import TransactionInfo from "../containers/Address/TransactionInfo";
 import MoreInfo from "../containers/Address/MoreInfo";
 import AddressSection from "../containers/Address/AddressSection";
 import AddressContractSection from "../containers/Address/AddressContractSection";
-import { useAddressTransactionDataV2, useAddressData } from "../hooks";
+import {
+  useAddressTransactionDataV2,
+  useAddressData,
+  useContractDetails,
+} from "../hooks";
 import ContractInfo from "../containers/Address/ContractInfo";
 
 const AddressPage = () => {
@@ -21,9 +25,10 @@ const AddressPage = () => {
     totalTransactions,
     tokenTransfers,
     nftTransfers,
-  } = useAddressTransactionDataV2(address);
+    contractDetails: contractCreationTx,
+  } = useAddressTransactionDataV2(address, isContractAddress);
 
-  console.log({ isContractAddress });
+  const { contractDetails } = useContractDetails(address);
 
   return (
     <div className="p-6">
@@ -56,7 +61,12 @@ const AddressPage = () => {
               firstTx={firstTransaction || null}
             />
           ) : (
-            <ContractInfo />
+            <ContractInfo
+              address={address}
+              tokenInfo={contractDetails?.tokenInfo}
+              creator={contractCreationTx?.from}
+              txHash={contractCreationTx?.hash}
+            />
           )}
         </div>
 
@@ -73,6 +83,10 @@ const AddressPage = () => {
               transactions={transactions}
               tokenTransfers={tokenTransfers}
               nftTransfers={nftTransfers}
+              deploymentCode={contractCreationTx?.data}
+              creationCode={contractDetails?.deploymentCode}
+              contractCreator={contractCreationTx?.from}
+              contractTxHash={contractCreationTx?.hash}
             />
           )}
 
