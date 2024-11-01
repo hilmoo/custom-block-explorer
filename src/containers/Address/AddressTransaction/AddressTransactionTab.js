@@ -2,11 +2,11 @@ import React from "react";
 import AddresssTransactionSummary from "./AddressTransactionSummary";
 import AddresssTransactionList from "./AddresssTransactionList";
 
-const AddressTransactionTab = () => {
+const AddressTransactionTab = ({ transactions }) => {
   return (
     <div>
-      <AddresssTransactionSummary />
-      <AddresssTransactionList />
+      <AddresssTransactionSummary totalTxs={transactions?.length} />
+      <AddresssTransactionList transactions={transactions} />
     </div>
   );
 };

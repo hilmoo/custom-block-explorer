@@ -6,6 +6,7 @@ const BlockList = lazy(() => import("../pages/BlockList"));
 const Transactions = lazy(() => import("../pages/Transactions"));
 const Block = lazy(() => import("../pages/Block"));
 const Transaction = lazy(() => import("../pages/Transaction"));
+const VerifyContract = lazy(() => import("../pages/VerifyContract"));
 
 const routes = [
   {
@@ -53,6 +54,14 @@ const routes = [
     component: (
       <Suspense fallback={<div>Loading Address...</div>}>
         <AddressPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/verify-contract/:address",
+    component: (
+      <Suspense fallback={<div>Loading VerifyContract...</div>}>
+        <VerifyContract />
       </Suspense>
     ),
   },

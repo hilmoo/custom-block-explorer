@@ -9,13 +9,29 @@ import InternalTransaction from "../containers/Block/InternalTransaction";
 import TokenTransfer from "../containers/Block/TokenTransfer";
 import Withdrawals from "../containers/Block/Withdrawals";
 import { useNavigate, useParams } from "react-router-dom";
+import useBlockData from "../hooks/useBlockData";
 
 const TABS = [
-  { id: 1, label: "Overview", value: "overview" },
-  { id: 1, label: "Transactions", value: "transaction" },
-  { id: 1, label: "Internal Txs", value: "internalTxs" },
-  { id: 1, label: "Token Transfers", value: "tokenTransfer" },
-  { id: 1, label: "Withdrawals", value: "withdrawal" },
+  { id: "overview", label: "Overview", value: "overview" },
+  { id: "transaction", label: "Transactions", value: "transaction" },
+  {
+    id: "internalTxs",
+    label: "Internal Txs",
+    value: "internalTxs",
+    disabled: true,
+  },
+  {
+    id: "tokenTransfer",
+    label: "Token Transfers",
+    value: "tokenTransfer",
+    disabled: true,
+  },
+  {
+    id: "withdrawal",
+    label: "Withdrawals",
+    value: "withdrawal",
+    disabled: true,
+  },
 ];
 
 const Block = () => {
@@ -23,6 +39,8 @@ const Block = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { block } = useBlockData(Number(id));
 
   const onTabButtonClick = (id) => {
     setActiveTab(id);
@@ -40,17 +58,17 @@ const Block = () => {
 
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "overview") {
-      return <BlockOverview />;
+      return <BlockOverview block={block} />;
     } else if (activeTab === "transaction") {
-      return <BlockTransactions />;
+      return <BlockTransactions block={block} />;
     } else if (activeTab === "internalTxs") {
-      return <InternalTransaction />;
+      return <InternalTransaction block={block} />;
     } else if (activeTab === "tokenTransfer") {
-      return <TokenTransfer />;
+      return <TokenTransfer block={block} />;
     } else {
-      return <Withdrawals />;
+      return <Withdrawals block={block} />;
     }
-  }, [activeTab]);
+  }, [activeTab, id, block]);
 
   return (
     <div className="p-6">

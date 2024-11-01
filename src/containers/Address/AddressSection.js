@@ -3,18 +3,20 @@ import React, { useCallback, useState } from "react";
 import TabButton from "../../components/UI/TabButton";
 import AddressTransactionTab from "./AddressTransaction/AddressTransactionTab";
 import InternalTransaction from "../Transaction/InternalTransaction";
+import AddressTokenTransfers from "./AddressTransaction/AddressTokenTransfers";
+import AddressNFTTransfers from "./AddressTransaction/AddressNFTTransfers";
 
 const TABS = [
   { id: 1, label: "Transactions", value: "transaction" },
-  { id: 3, label: "Internal Txs", value: "internalTxs" },
   { id: 2, label: "Token Transfers", value: "tokenTransfers" },
   { id: 4, label: "NFT Transfers", value: "nftTransfer" },
-  { id: 5, label: "Assets", value: "assets" },
-  { id: 5, label: "Ens", value: "ens" },
-  { id: 5, label: "Blocks", value: "blocks" },
+  { id: 3, label: "Internal Txs", value: "internalTxs", disabled: true },
+  { id: 5, label: "Assets", value: "assets", disabled: true },
+  { id: 6, label: "Ens", value: "ens", disabled: true },
+  { id: 7, label: "Blocks", value: "blocks", disabled: true },
 ];
 
-const AddressSection = () => {
+const AddressSection = ({ transactions, tokenTransfers, nftTransfers }) => {
   const [activeTab, setActiveTab] = useState(TABS[0].value);
 
   const onTabButtonClick = (id) => {
@@ -23,11 +25,13 @@ const AddressSection = () => {
 
   const getActiveTabContent = useCallback(() => {
     if (activeTab === "transaction") {
-      return <AddressTransactionTab />;
-    } else if (activeTab === "internalTxs") {
-      return <InternalTransaction />;
+      return <AddressTransactionTab transactions={transactions} />;
+    } else if (activeTab === "tokenTransfers") {
+      return <AddressTokenTransfers transactions={tokenTransfers} />;
+    } else if (activeTab === "nftTransfer") {
+      return <AddressNFTTransfers transactions={nftTransfers} />;
     }
-  }, [activeTab]);
+  }, [activeTab, transactions, tokenTransfers, nftTransfers]);
 
   return (
     <div>
