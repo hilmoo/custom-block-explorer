@@ -2,6 +2,16 @@
   "name": "block-explorer",
   "version": "0.1.0",
   "private": true,
+  "description": "A basic blockchain explorer for interacting with a local Hardhat node.",
+  "keywords": [
+    "blockchain",
+    "explorer",
+    "React",
+    "Hardhat",
+    "Ethers.js",
+    "UI"
+  ],
+  "author": "Your Name or Organization",
   "dependencies": {
     "@agnostico/browser-solidity-compiler": "^0.2.0",
     "@heroicons/react": "^2.1.5",
