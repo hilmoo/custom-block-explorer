@@ -90,11 +90,6 @@ This setup connects the tests to the running Hardhat node for more realistic tes
 - **Ethers.js**
 - **Tailwind CSS**
 - **Hardhat**
-- **Ant Design**
-
-## License
-
-This project is licensed under the MIT License.
 
 <div align="center">
   <sub>Created by <a href="https://github.com/Shaivpidadi">Shaishav Pidadi</a>.</sub>
