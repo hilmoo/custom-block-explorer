@@ -23,7 +23,6 @@ const Home = () => {
     loading: isStatsLoading,
   } = useBlockchainStats();
 
-  console.log("Blocks updated", blocks.length);
   const blockData = useMemo(() => {
     let data = [];
 

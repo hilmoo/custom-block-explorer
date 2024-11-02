@@ -31,7 +31,6 @@ const useIsBlockchainReady = () => {
         setIsReady(false);
       }
     } catch (err) {
-      console.log({ err });
       clearIndexedDB();
       setIsReady(false);
       setError(`Error: ${err.message}`);
