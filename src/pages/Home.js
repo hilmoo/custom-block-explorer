@@ -24,24 +24,29 @@ const Home = () => {
   } = useBlockchainStats();
 
   const blockData = useMemo(() => {
+    if (!blocks) return [];
     let data = [];
 
     blocks.map((block) => {
-      data.push({
-        blockNumber: block.number,
-        timeStamp: block.timestamp,
-        producer: block.miner,
-        producerLink: "",
-        txns: block.transactions.length,
-        blockLink: ``,
-        ...getGasPriceAndRewards(block),
-      });
+      if (!!block) {
+        data.push({
+          blockNumber: block.number,
+          timeStamp: block.timestamp,
+          producer: block.miner,
+          producerLink: "",
+          txns: block.transactions.length,
+          blockLink: ``,
+          ...getGasPriceAndRewards(block),
+        });
+      }
     });
 
     return data;
   }, [blocks]);
 
   const txData = useMemo(() => {
+    if (!transactions) return [];
+
     let data = [];
 
     transactions.map((tx) => {

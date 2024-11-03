@@ -43,10 +43,20 @@ export const useLatestBlocks = (pageNumber = 1, blockCount = 10) => {
         const newBlock = await provider.getBlockWithTransactions(
           newBlockNumber
         );
-        setBlocks((prevBlocks) => [
-          newBlock,
-          ...prevBlocks.slice(0, Math.min(50, newBlockNumber)),
-        ]);
+
+        setBlocks((prevBlocks) => {
+          const blockExists = prevBlocks.some(
+            (block) => block?.number === newBlock?.number
+          );
+          if (blockExists) {
+            return prevBlocks;
+          }
+          return [
+            newBlock,
+            ...prevBlocks.slice(0, Math.min(50, prevBlocks.length)),
+          ];
+        });
+
         setTotalBlocks(newBlockNumber);
       } catch (err) {
         console.error("Error fetching new block:", err);
