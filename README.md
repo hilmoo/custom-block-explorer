@@ -2,6 +2,11 @@
 
 This project is a custom blockchain explorer built with React, Ethers.js, and Hardhat. It allows users to explore blockchain data and interact with smart contracts on a local Hardhat node, making it ideal for development and testing in a controlled environment.
 
+# Preview
+If you have Hardhat running locally, preview the explorer using your local provider: [Preview with Local Provider](https://custom-block-explorer.vercel.app/)
+
+Or, try the explorer with sample data here: [Preview with Mock Data](https://custom-block-explorer-git-preview-shaivpidadis-projects.vercel.app/?_vercel_share=f2OikcXqZyFhZGM44gdWmPI0V4XveGkN)
+
 ## Getting Started
 
 ### Prerequisites
