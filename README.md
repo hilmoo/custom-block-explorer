@@ -5,7 +5,7 @@ This project is a custom blockchain explorer built with React, Ethers.js, and Ha
 # Preview
 If you have Hardhat running locally, preview the explorer using your local provider: [Preview with Local Provider](https://custom-block-explorer.vercel.app/)
 
-Or, try the explorer with sample data here: [Preview with Mock Data](https://custom-block-explorer-git-preview-shaivpidadis-projects.vercel.app/?vercel_share=f2OikcXqZyFhZGM44gdWmPI0V4XveGkN)
+Or, try the explorer with sample data here: [Preview with Mock Data](https://custom-block-explorer-git-preview-shaivpidadis-projects.vercel.app?_vercel_share=PBm7mEa4Tj589eFt0JIwOXQvbINsE4Be)
 
 ## Getting Started
 
