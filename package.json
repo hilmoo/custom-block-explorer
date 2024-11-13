@@ -11,7 +11,6 @@
     "Ethers.js",
     "UI"
   ],
-  "author": "Your Name or Organization",
   "dependencies": {
     "@agnostico/browser-solidity-compiler": "^0.2.0",
     "@heroicons/react": "^2.1.5",
